@@ -1,0 +1,11 @@
+implementation_plan.md
+
+venv/
+.venv/
+env/
+ENV/
+
+.env
+.env.*
+.env.local
+.env.*.local
