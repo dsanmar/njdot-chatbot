@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans:              var(--font-geist-sans);
+  --color-background:       #ffffff;
+  --color-foreground:       #171717;
+  --color-njdot-blue:       #003366;
+  --color-njdot-blue-dark:  #002244;
+  --color-njdot-blue-light: #004488;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #ffffff;
+  color: #171717;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
