@@ -26,6 +26,13 @@ class Config:
     # Environment
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
 
+    # Frontend origin for CORS (set to Vercel URL in production)
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
+    # Supabase JWT secret — used to verify user tokens in conversations endpoints.
+    # Find it at: Supabase Dashboard → Project Settings → API → JWT Secret
+    SUPABASE_JWT_SECRET: str = os.getenv("SUPABASE_JWT_SECRET", "")
+
     # Paths
     BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     DATA_DIR: str = os.path.join(BASE_DIR, "data")

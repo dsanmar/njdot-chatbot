@@ -25,7 +25,10 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.conversations import router as conversations_router
+from app.api.pdf import router as pdf_router
 from app.api.query import router as query_router
+from app.config import config
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -44,10 +47,14 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# ── CORS (allow all origins for PoC) ─────────────────────────────────────────
+# ── CORS ──────────────────────────────────────────────────────────────────────
+# Always allow localhost for local dev; add FRONTEND_URL for production.
+_allowed_origins: list[str] = list(
+    {config.FRONTEND_URL, "http://localhost:3000"}
+)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -55,6 +62,8 @@ app.add_middleware(
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 app.include_router(query_router)
+app.include_router(pdf_router)
+app.include_router(conversations_router)
 
 
 # ── Health check ──────────────────────────────────────────────────────────────

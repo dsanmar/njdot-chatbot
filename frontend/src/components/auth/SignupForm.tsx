@@ -1,22 +1,31 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
+const inputCls =
+  'w-full rounded-lg border border-[#E8E8E8] bg-[#F5F5F5] px-3 text-sm text-gray-800 ' +
+  'placeholder:text-gray-400 transition-colors ' +
+  'focus:border-[#1B3A6B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1B3A6B]/10 ' +
+  'disabled:cursor-not-allowed disabled:opacity-50'
+
 export default function SignupForm() {
-  const [email, setEmail]                   = useState('')
-  const [password, setPassword]             = useState('')
+  const [firstName, setFirstName]             = useState('')
+  const [lastName, setLastName]               = useState('')
+  const [email, setEmail]                     = useState('')
+  const [password, setPassword]               = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError]                   = useState<string | null>(null)
-  const [success, setSuccess]               = useState(false)
-  const [isLoading, setIsLoading]           = useState(false)
+  const [error, setError]                     = useState<string | null>(null)
+  const [isLoading, setIsLoading]             = useState(false)
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError(null)
 
-    // ── Client-side validation ────────────────────────────────────────────
     if (password.length < 8) {
       setError('Password must be at least 8 characters.')
       return
@@ -29,84 +38,95 @@ export default function SignupForm() {
     setIsLoading(true)
 
     const supabase = createClient()
-    const { error: authError } = await supabase.auth.signUp({ email, password })
 
-    if (authError) {
-      setError(authError.message)
+    // Sign up the user
+    const { error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { first_name: firstName, last_name: lastName },
+      },
+    })
+
+    if (signUpError) {
+      setError(signUpError.message)
       setIsLoading(false)
       return
     }
 
-    setSuccess(true)
+    // Immediately sign in so they land in the app without email confirmation
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (signInError) {
+      // Account was created but auto-login failed — send them to login
+      router.push('/login')
+      return
+    }
+
+    router.push('/chat')
+    router.refresh()
   }
 
-  // ── Success state ─────────────────────────────────────────────────────────
-  if (success) {
-    return (
-      <div className="w-full max-w-sm text-center">
-        <div className="rounded-t-xl bg-[#003366] px-6 py-5 text-center">
-          <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-white/60">
-            New Jersey Department of Transportation
-          </p>
-          <h1 className="text-xl font-bold text-white">NJDOT AI Assistant</h1>
-        </div>
-        <div className="rounded-b-xl border border-t-0 border-gray-200 bg-white px-6 py-8 shadow-lg">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-            <svg
-              className="h-6 w-6 text-green-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-          <h2 className="mb-2 text-base font-semibold text-gray-800">
-            Check your email
-          </h2>
-          <p className="text-sm text-gray-500">
-            We sent a confirmation link to{' '}
-            <span className="font-medium text-gray-700">{email}</span>. Click the
-            link to activate your account, then{' '}
-            <Link href="/login" className="font-medium text-[#003366] hover:underline">
-              sign in
-            </Link>
-            .
-          </p>
-        </div>
-      </div>
-    )
-  }
-
-  // ── Signup form ───────────────────────────────────────────────────────────
   return (
-    <div className="w-full max-w-sm">
-      {/* ── NJDOT header band ── */}
-      <div className="rounded-t-xl bg-[#003366] px-6 py-5 text-center">
-        <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-white/60">
-          New Jersey Department of Transportation
-        </p>
-        <h1 className="text-xl font-bold text-white">NJDOT AI Assistant</h1>
-      </div>
+    <div className="w-full" style={{ maxWidth: '480px' }}>
+      {/* Card */}
+      <div className="rounded-2xl bg-white shadow-xl ring-1 ring-black/5" style={{ padding: '44px' }}>
 
-      {/* ── Card body ── */}
-      <div className="rounded-b-xl border border-t-0 border-gray-200 bg-white px-6 py-6 shadow-lg">
-        <h2 className="mb-5 text-center text-sm font-semibold text-gray-700">
-          Create your account
-        </h2>
+        {/* Back to home — inside card, top */}
+        <Link href="/" className="mb-5 block text-[13px] text-gray-400 hover:text-gray-600">
+          ← Back to home
+        </Link>
+
+        {/* Logo */}
+        <div className="mb-5 flex justify-center">
+          <Image src="/njdot_logo.png" alt="NJDOT" width={64} height={64} priority />
+        </div>
+
+        <h1 className="mb-1 text-center text-xl font-bold text-[#1B3A6B]">Smart Assistant</h1>
+        <p className="mb-6 text-center text-sm text-gray-400">Create your account</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name row */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label htmlFor="first-name" className="mb-1.5 block text-xs font-medium text-gray-700">
+                First name
+              </label>
+              <input
+                id="first-name"
+                type="text"
+                autoComplete="given-name"
+                required
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                disabled={isLoading}
+                placeholder="Jane"
+                style={{ height: '44px' }}
+                className={inputCls}
+              />
+            </div>
+            <div>
+              <label htmlFor="last-name" className="mb-1.5 block text-xs font-medium text-gray-700">
+                Last name
+              </label>
+              <input
+                id="last-name"
+                type="text"
+                autoComplete="family-name"
+                required
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                disabled={isLoading}
+                placeholder="Smith"
+                style={{ height: '44px' }}
+                className={inputCls}
+              />
+            </div>
+          </div>
+
           {/* Email */}
           <div>
-            <label
-              htmlFor="email"
-              className="mb-1.5 block text-xs font-medium text-gray-600"
-            >
+            <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-gray-700">
               Email address
             </label>
             <input
@@ -118,16 +138,14 @@ export default function SignupForm() {
               onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
               placeholder="you@example.com"
-              className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-[#003366] focus:outline-none focus:ring-2 focus:ring-[#003366]/10 disabled:bg-gray-50 disabled:text-gray-400"
+              style={{ height: '44px' }}
+              className={inputCls}
             />
           </div>
 
           {/* Password */}
           <div>
-            <label
-              htmlFor="password"
-              className="mb-1.5 block text-xs font-medium text-gray-600"
-            >
+            <label htmlFor="password" className="mb-1.5 block text-xs font-medium text-gray-700">
               Password{' '}
               <span className="font-normal text-gray-400">(min. 8 characters)</span>
             </label>
@@ -141,16 +159,14 @@ export default function SignupForm() {
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
               placeholder="••••••••"
-              className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-[#003366] focus:outline-none focus:ring-2 focus:ring-[#003366]/10 disabled:bg-gray-50 disabled:text-gray-400"
+              style={{ height: '44px' }}
+              className={inputCls}
             />
           </div>
 
           {/* Confirm password */}
           <div>
-            <label
-              htmlFor="confirm-password"
-              className="mb-1.5 block text-xs font-medium text-gray-600"
-            >
+            <label htmlFor="confirm-password" className="mb-1.5 block text-xs font-medium text-gray-700">
               Confirm password
             </label>
             <input
@@ -162,33 +178,32 @@ export default function SignupForm() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               disabled={isLoading}
               placeholder="••••••••"
-              className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:border-[#003366] focus:outline-none focus:ring-2 focus:ring-[#003366]/10 disabled:bg-gray-50 disabled:text-gray-400"
+              style={{ height: '44px' }}
+              className={inputCls}
             />
           </div>
 
-          {/* Error message */}
+          {/* Error */}
           {error && (
-            <p className="rounded-lg bg-red-50 px-3 py-2.5 text-xs text-red-700">
+            <div className="rounded-lg bg-red-50 px-3 py-2.5 text-xs text-red-700 ring-1 ring-red-200">
               {error}
-            </p>
+            </div>
           )}
 
           {/* Submit */}
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-lg bg-[#003366] py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#002244] focus:outline-none focus:ring-2 focus:ring-[#003366]/40 disabled:cursor-not-allowed disabled:opacity-50"
+            style={{ height: '44px' }}
+            className="w-full rounded-lg bg-[#CC2529] text-sm font-semibold text-white transition-colors hover:bg-[#a81e21] focus:outline-none focus:ring-2 focus:ring-[#CC2529]/30 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? 'Creating account…' : 'Create Account'}
           </button>
         </form>
 
-        <p className="mt-4 text-center text-xs text-gray-500">
+        <p className="mt-5 text-center text-xs text-gray-500">
           Already have an account?{' '}
-          <Link
-            href="/login"
-            className="font-medium text-[#003366] hover:underline"
-          >
+          <Link href="/login" className="font-semibold text-[#1B3A6B] hover:underline">
             Sign in
           </Link>
         </p>

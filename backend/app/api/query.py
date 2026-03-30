@@ -33,10 +33,11 @@ from app.database                        import get_db
 from app.retrieval.vector_search         import VectorSearcher
 from app.retrieval.bm25_search           import KeywordSearcher
 from app.retrieval.hybrid_ranker         import HybridRanker, classify_query
+from app.retrieval.bdc_matcher           import get_bdc_matcher
 from app.generation.llm_client           import LLMClient
 from app.generation.prompt_builder       import PromptBuilder
 from app.generation.citation_serializer  import CitationSerializer
-from app.models                          import CitationItem, QueryRequest, QueryResponse
+from app.models                          import BDCAlertItem, CitationItem, QueryRequest, QueryResponse
 
 logger = logging.getLogger(__name__)
 
@@ -45,13 +46,14 @@ logger = logging.getLogger(__name__)
 # Sharing db_client and oai_client across components avoids opening more
 # than one connection to Supabase and one to OpenAI per worker process.
 #
-_db         = get_db()
-_vector     = VectorSearcher(db_client=_db)
-_keyword    = KeywordSearcher(db_client=_db)
-_hybrid     = HybridRanker(vector_searcher=_vector, keyword_searcher=_keyword)
-_builder    = PromptBuilder()
-_llm        = LLMClient()
-_serializer = CitationSerializer()
+_db          = get_db()
+_vector      = VectorSearcher(db_client=_db)
+_keyword     = KeywordSearcher(db_client=_db)
+_hybrid      = HybridRanker(vector_searcher=_vector, keyword_searcher=_keyword)
+_bdc_matcher = get_bdc_matcher()
+_builder     = PromptBuilder()
+_llm         = LLMClient()
+_serializer  = CitationSerializer()
 
 # ── Router ────────────────────────────────────────────────────────────────────
 
@@ -104,12 +106,24 @@ async def query_endpoint(request: QueryRequest) -> QueryResponse:
     # ── Query classification (for the response metadata field) ─────────────
     _v, _k, query_type = classify_query(query)
 
+    amendments: list = []   # populated inside try; kept here for scope in response build
+
     try:
         # ── Step 1: Hybrid retrieval ──────────────────────────────────────
         chunks = _hybrid.search(query, collection=collection, match_count=_RETRIEVE_K)
 
+        # ── Step 1.5: BDC amendment lookup ───────────────────────────────
+        # Collect unique section_ids from retrieved chunks, then check
+        # bdc_section_map for any amendments affecting those sections.
+        section_ids = list({
+            c["metadata"].get("section_id")
+            for c in chunks
+            if c.get("metadata", {}).get("section_id")
+        })
+        amendments = _bdc_matcher.get_amendments(section_ids)
+
         # ── Step 2: Prompt assembly ───────────────────────────────────────
-        system_prompt, user_message = _builder.build(query, chunks)
+        system_prompt, user_message = _builder.build(query, chunks, amendments=amendments)
 
         # ── Step 3: LLM generation ────────────────────────────────────────
         raw_response = _llm.complete(system_prompt, user_message)
@@ -133,9 +147,23 @@ async def query_endpoint(request: QueryRequest) -> QueryResponse:
     # If CitationSerializer fell back (parse_error), citations is already []
     citations: List[CitationItem] = [CitationItem(**c) for c in raw_cites]
 
+    # Build BDC alert list (summary fields only — amendment_text goes to LLM, not client)
+    bdc_alerts: List[BDCAlertItem] = [
+        BDCAlertItem(
+            bdc_id=a["bdc_id"],
+            section_id=a["section_id"],
+            effective_date=str(a.get("effective_date") or ""),
+            subject=a.get("subject") or "",
+            implementation_code=a.get("implementation_code") or "",
+            change_type=a.get("change_type") or None,
+        )
+        for a in amendments
+    ]
+
     return QueryResponse(
         answer=answer,
         citations=citations,
         query_type=query_type,
         response_time_ms=elapsed_ms,
+        bdc_alerts=bdc_alerts,
     )

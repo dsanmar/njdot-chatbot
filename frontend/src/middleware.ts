@@ -4,13 +4,18 @@
  * Responsibilities:
  *  1. Refresh the Supabase session on every request so cookies stay valid.
  *  2. Protect /chat — redirect unauthenticated visitors to /login.
- *  3. Redirect authenticated visitors away from /login and /signup to /chat.
+ *  3. Redirect authenticated visitors away from auth pages to /chat.
  */
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Public auth-related paths (accessible without login, but redirected away from if logged in)
+const AUTH_PATHS = ['/login', '/signup', '/forgot-password']
+
+// Paths that should always be accessible regardless of auth state
+const ALWAYS_PUBLIC = ['/update-password']
+
 export async function middleware(request: NextRequest) {
-  // Start with a pass-through response; the cookie setter below may replace it.
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -22,8 +27,6 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          // Write updated auth cookies back to both the request and response
-          // so the session is available downstream within the same cycle.
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value),
           )
@@ -36,15 +39,19 @@ export async function middleware(request: NextRequest) {
     },
   )
 
-  // IMPORTANT: always use getUser() here — getSession() is not safe in
-  // middleware because the session can come from an untrusted cookie.
+  // IMPORTANT: always use getUser() — getSession() is not safe in middleware.
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
   const { pathname } = request.nextUrl
 
-  // ── Protect /chat ────────────────────────────────────────────────────────
+  // ── Always-public paths (e.g. /reset-password needs the token in the URL) ──
+  if (ALWAYS_PUBLIC.some((p) => pathname.startsWith(p))) {
+    return supabaseResponse
+  }
+
+  // ── Protect /chat ─────────────────────────────────────────────────────────
   if (pathname.startsWith('/chat') && !user) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/login'
@@ -52,7 +59,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // ── Redirect authenticated users away from auth pages ────────────────────
-  if ((pathname === '/login' || pathname === '/signup') && user) {
+  if (AUTH_PATHS.includes(pathname) && user) {
     const chatUrl = request.nextUrl.clone()
     chatUrl.pathname = '/chat'
     return NextResponse.redirect(chatUrl)
@@ -63,13 +70,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Run on all routes except:
-     *  - _next/static  (static assets)
-     *  - _next/image   (image optimisation)
-     *  - favicon.ico
-     *  - public files with extensions
-     */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }

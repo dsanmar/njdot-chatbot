@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import ChatInterface from '@/components/chat/ChatInterface'
 
 export const metadata: Metadata = {
-  title: 'Chat — NJDOT AI Assistant',
+  title: 'NJDOT - Smart Assistant',
 }
 
 export default async function ChatPage() {
@@ -12,5 +12,5 @@ export default async function ChatPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  return <ChatInterface userEmail={user?.email} />
+  return <ChatInterface userId={user?.id} userEmail={user?.email} />
 }

@@ -29,7 +29,7 @@ already ranked by descending hybrid score).
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 
 # ── Constants ─────────────────────────────────────────────────────────────────
@@ -53,6 +53,12 @@ REQUIREMENTS:
 FOOTNOTE HANDLING:
 When answering from tables with footnotes (marked with ¹, ², *, etc.):
 - Include the footnote text in your answer naturally.
+
+BDC AMENDMENT HANDLING:
+When [BDC AMENDMENT] blocks appear before the baseline spec chunks:
+- Treat the BDC amendment text as the CURRENT, AUTHORITATIVE version of that section.
+- The baseline spec text for the same section may be superseded; defer to the BDC.
+- Note in your answer that the section was amended, citing the BDC ID and effective date.
 
 YOUR RESPONSE FORMAT (JSON only, no markdown):
 {
@@ -93,8 +99,9 @@ class PromptBuilder:
 
     def build(
         self,
-        query:  str,
-        chunks: List[Dict[str, Any]],
+        query:      str,
+        chunks:     List[Dict[str, Any]],
+        amendments: Optional[List[Dict[str, Any]]] = None,
     ) -> Tuple[str, str]:
         """Build a (system_prompt, user_message) pair.
 
@@ -106,25 +113,62 @@ class PromptBuilder:
             Ranked retrieval results.  Each dict must have at least
             ``content`` and ``metadata`` keys.  Only the first
             ``max_chunks`` entries are used.
+        amendments : list[dict] or None
+            BDC amendment dicts from ``BDCMatcher.get_amendments()``.
+            When non-empty, amendment blocks are injected BEFORE the
+            baseline spec chunks so the LLM treats them as authoritative.
 
         Returns
         -------
         (system_prompt, user_message) : tuple[str, str]
             Ready to pass directly to ``LLMClient.complete()``.
         """
-        context_blocks = self._build_context(chunks)
+        context_blocks = self._build_context(chunks, amendments or [])
         user_message   = f"{context_blocks}\n\nQuestion: {query}"
         return _SYSTEM_PROMPT, user_message
 
     # ── Private ───────────────────────────────────────────────────────────────
 
-    def _build_context(self, chunks: List[Dict[str, Any]]) -> str:
-        """Render chunks as numbered context blocks."""
+    def _build_context(
+        self,
+        chunks:     List[Dict[str, Any]],
+        amendments: List[Dict[str, Any]],
+    ) -> str:
+        """Render amendment blocks (if any) followed by baseline spec chunks."""
+        parts: List[str] = []
+        if amendments:
+            parts.append(self._build_amendment_blocks(amendments))
+            parts.append("\u2500\u2500\u2500 BASELINE SPECIFICATION \u2500\u2500\u2500")
+        parts.append(self._build_baseline_blocks(chunks))
+        return "\n\n".join(parts)
+
+    def _build_baseline_blocks(self, chunks: List[Dict[str, Any]]) -> str:
+        """Render baseline spec chunks as numbered context blocks."""
         blocks: List[str] = []
         for n, chunk in enumerate(chunks[: self._max_chunks], start=1):
             header  = self._chunk_header(n, chunk)
             content = (chunk.get("content") or "").strip()
             blocks.append(f"{header}\n{content}")
+        return "\n\n".join(blocks)
+
+    @staticmethod
+    def _build_amendment_blocks(amendments: List[Dict[str, Any]]) -> str:
+        """Render BDC amendment blocks with clear authoritative headers."""
+        blocks: List[str] = []
+        for a in amendments:
+            impl  = a.get("implementation_code", "R")
+            label = "ROUTINE" if impl == "R" else "URGENT"
+            header = (
+                f"[BDC AMENDMENT \u2014 {a.get('bdc_id', '?')} \u2014 "
+                f"Effective {a.get('effective_date', '?')} \u2014 {label}]"
+            )
+            meta = (
+                f"Section {a.get('section_id', '?')} | "
+                f"Amendment type: {a.get('change_type', '?')}\n"
+                f"Subject: {a.get('subject', '')}"
+            )
+            body = (a.get("amendment_text") or "").strip()
+            blocks.append(f"{header}\n{meta}\n\n{body}")
         return "\n\n".join(blocks)
 
     @staticmethod

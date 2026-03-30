@@ -309,11 +309,11 @@
       "category": "section_reference",
       "difficulty": "medium",
       "query": "Section 901.10 - ME sampling frequency for DGA gradation acceptance?",
-      "gold_answer": "According to AASHTO T 2 (no specific frequency provided)",
+      "gold_answer": "The ME samples DGA according to AASHTO T 2 at a frequency of one sample per 500 cubic yards.",
       "required_citations": ["Standard Specifications", "Section 901.10", "Page 399"],
       "requires_footnote": false,
       "source_section": "901.10",
-      "notes": "Section 901.10 references AASHTO T 2 for gradation sampling but gives no cy frequency (unlike 901.11 Table 901.11-3)"
+      "notes": "Section 901.10 specifies both the sampling method (AASHTO T 2) and the frequency (one sample per 500 cubic yards) directly in the text, not in a table."
     },
     {
       "id": 26,
@@ -798,7 +798,7 @@
       "division": "300",
       "category": "section_reference",
       "difficulty": "medium",
-      "query": "How long must concrete base course be cured before forms can be removed per Section 304.03?",
+      "query": "How long must concrete base course be cured per Section 304.03?",
       "gold_answer": "7 days",
       "required_citations": ["Standard Specifications", "Section 304.03", "Page 185"],
       "requires_footnote": false,
@@ -931,8 +931,8 @@
       "category": "section_reference",
       "difficulty": "medium",
       "query": "What is the maximum weight of pneumatic hammers allowed for general concrete deck removal per Section 551?",
-      "gold_answer": "33 pounds (power chipping or hand tools). Within 6 inches of primary girder reinforcement steel such as stirrups, maximum is 20 pounds.",
-      "required_citations": ["Standard Specifications", "Section 551.03", "Page 310"],
+      "gold_answer": "33 pounds. Within 6 inches of primary girder reinforcement steel, the maximum is 20 pounds.",
+      "required_citations": ["Standard Specifications", "Section 551.03", "Page 312"],
       "requires_footnote": false,
       "source_section": "551.03"
     },
@@ -1107,7 +1107,7 @@
       "category": "multi_section",
       "difficulty": "hard",
       "query": "A contractor wants to use RAP in an HMA base course and also include GBSM. What is the maximum combined percentage of these two recycled materials, and what are their individual limits?",
-      "gold_answer": "The total recycled materials in HMA base or intermediate course cannot exceed 35 percent. RAP individually is limited to 25 percent maximum, and GBSM is limited to 5 percent maximum. Together they may not exceed the 35 percent combined ceiling (Table 902.02.02-1).",
+      "gold_answer": "The combined total of recycled materials (including RAP and GBSM) in HMA base or intermediate course must not exceed 35%. Individually, RAP is limited to 25% and GBSM is limited to 5%",
       "required_citations": ["Standard Specifications", "Section 902.02.02", "Table 902.02.02-1", "Page 406"],
       "requires_footnote": false,
       "source_section": "902.02.02"

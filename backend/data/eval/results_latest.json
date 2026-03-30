@@ -1,10 +1,10 @@
 {
-  "run_at": "2026-03-02T23:21:51.141560+00:00",
+  "run_at": "2026-03-25T22:03:15.893467+00:00",
   "pipeline_model": "gpt-4o-mini",
   "judge_model": "gpt-4o-mini",
   "total_run": 100,
-  "correct": 90,
-  "accuracy": 90.0,
+  "correct": 91,
+  "accuracy": 91.0,
   "dry_run": false,
   "collection": "specs_2019_v2",
   "category_filter": null,
@@ -18,9 +18,9 @@
       "gold_answer": "70-80%, but for 37.5 mm nominal maximum size mixtures, the specified lower limit is 64% for all design traffic levels (per footnote 1).",
       "system_answer": "The VFA requirement for Level L compaction at 37.5 mm aggregate is 70 \u2013 80%.",
       "correct": false,
-      "reason": "The system answer omits the specified lower limit of 64% for Level L compaction at 37.5 mm aggregate, which is a critical value.",
+      "reason": "The system answer omits the specified lower limit of 64% for 37.5 mm nominal maximum size mixtures.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3828,
+      "elapsed_ms": 7683,
       "pipeline_error": null
     },
     {
@@ -29,11 +29,11 @@
       "difficulty": "medium",
       "question": "What are the composition requirements for RCA in Table 901.10.02-1?",
       "gold_answer": "Concrete minimum 90%, HMA maximum 10%, Brick/cinder block/schist/concrete washout/friable material maximum 4%, Reactive material maximum 0%, Wood maximum 0.1%",
-      "system_answer": "The composition requirements for RCA in Table 901.10.02-1 are as follows: Concrete must be a minimum of 90 percent, HMA has a maximum of 10 percent, brick, cinder block, schist, concrete washout, and other friable material has a maximum of 4 percent, reactive material must be 0 percent, and wood must be a maximum of 0.1 percent.",
+      "system_answer": "The composition requirements for RCA in Table 901.10.02-1 are as follows: Concrete must be a minimum of 90 percent, HMA must not exceed 10 percent, brick, cinder block, schist, concrete washout, and other friable material must not exceed 4 percent, reactive material must be 0 percent, and wood must not exceed 0.1 percent.",
       "correct": true,
-      "reason": "The system answer accurately reflects the composition requirements for RCA as stated in the gold answer, including all key percentages and materials.",
+      "reason": "The system answer accurately reflects the key composition requirements for RCA as stated in the gold answer, including the percentages for each material.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5816,
+      "elapsed_ms": 8505,
       "pipeline_error": null
     },
     {
@@ -42,11 +42,11 @@
       "difficulty": "easy",
       "question": "Show me the gradation for fine aggregate used in HMA from Table 901.05.02-2",
       "gold_answer": "3/8 inch = 100%, No. 4 = 95-100%, No. 8 = 80-100%, No. 200 = 0-5%",
-      "system_answer": "The gradation for fine aggregate used in HMA from Table 901.05.02-2 is as follows: Sieve Size - Percent Passing: 3/8\" - 100%; No. 4 - 95 \u2013 100%; No. 8 - 80 \u2013 100%; No. 200 - 0 \u2013 5.",
+      "system_answer": "The gradation for fine aggregate used in HMA from Table 901.05.02-2 is as follows: Sieve Size - Percent Passing: 3/8\" - 100%, No. 4 - 95 \u2013 100%, No. 8 - 80 \u2013 100%, No. 200 - 0 \u2013 5%.",
       "correct": true,
-      "reason": "The system answer contains all key facts from the gold answer, including the correct sieve sizes and their corresponding percent passing values.",
+      "reason": "The system answer contains all key facts from the gold answer, including the correct sieve sizes and percent passing values.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5069,
+      "elapsed_ms": 6928,
       "pipeline_error": null
     },
     {
@@ -59,7 +59,7 @@
       "correct": true,
       "reason": "The system answer contains the correct dust-to-binder ratio of 0.6 \u2013 1.2, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5068,
+      "elapsed_ms": 7400,
       "pipeline_error": null
     },
     {
@@ -72,7 +72,7 @@
       "correct": false,
       "reason": "The system answer states a VMA minimum of 15.0%, which is incorrect as the gold answer specifies 13.0%.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5428,
+      "elapsed_ms": 6553,
       "pipeline_error": null
     },
     {
@@ -85,7 +85,7 @@
       "correct": true,
       "reason": "The system answer accurately reflects the key fact from the gold answer regarding the gradation requirement for the No. 16 sieve fine aggregate in concrete.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5734,
+      "elapsed_ms": 4818,
       "pipeline_error": null
     },
     {
@@ -98,7 +98,7 @@
       "correct": true,
       "reason": "The system answer accurately states the maximum sodium sulfate soundness loss for fine aggregate in HMA as 5.0%, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3994,
+      "elapsed_ms": 4709,
       "pipeline_error": null
     },
     {
@@ -111,7 +111,7 @@
       "correct": true,
       "reason": "The system answer correctly states that N_des for Level M compaction is 75, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3376,
+      "elapsed_ms": 4828,
       "pipeline_error": null
     },
     {
@@ -122,9 +122,9 @@
       "gold_answer": "25%",
       "system_answer": "The maximum percentage of RAP allowed in HMA base course is 25 percent by weight of the total mixture.",
       "correct": true,
-      "reason": "The system answer correctly states that the maximum percentage of RAP allowed in HMA base course is 25 percent by weight of the total mixture, which aligns with the gold answer.",
+      "reason": "The system answer correctly states that the maximum percentage of RAP allowed in HMA base course is 25 percent, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 6225,
+      "elapsed_ms": 7662,
       "pipeline_error": null
     },
     {
@@ -137,7 +137,7 @@
       "correct": true,
       "reason": "The system answer accurately reflects the key fact from the gold answer regarding the percent passing the No. 200 sieve for DGA gradation.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4013,
+      "elapsed_ms": 7089,
       "pipeline_error": null
     },
     {
@@ -150,7 +150,7 @@
       "correct": true,
       "reason": "The system answer correctly states that the maximum percentage of CRCG in HMA base or intermediate course is 10 percent by weight, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3862,
+      "elapsed_ms": 5605,
       "pipeline_error": null
     },
     {
@@ -163,7 +163,7 @@
       "correct": true,
       "reason": "The system answer contains the correct VFA range of 65-78% for Level M at 12.5 mm aggregate, matching the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4986,
+      "elapsed_ms": 5305,
       "pipeline_error": null
     },
     {
@@ -176,7 +176,7 @@
       "correct": true,
       "reason": "The system answer correctly states that N_max for Level L is 75, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3648,
+      "elapsed_ms": 6083,
       "pipeline_error": null
     },
     {
@@ -189,7 +189,7 @@
       "correct": true,
       "reason": "The system answer correctly states the maximum allowable metal in CRCG as 3.0 percent, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4606,
+      "elapsed_ms": 4072,
       "pipeline_error": null
     },
     {
@@ -202,7 +202,7 @@
       "correct": true,
       "reason": "The system answer correctly states the required density at N_des for both Levels L and M as 96.0% of Gmm, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4095,
+      "elapsed_ms": 4584,
       "pipeline_error": null
     },
     {
@@ -211,11 +211,11 @@
       "difficulty": "easy",
       "question": "What does Section 901.10.02 say about RCA percentage of wear?",
       "gold_answer": "The loss shall not exceed 50 percent when tested according to AASHTO T 96.",
-      "system_answer": "Ensure that the loss does not exceed 50 percent when tested according to AASHTO T 96.",
+      "system_answer": "The percentage of wear for Recycled Concrete Aggregate (RCA) must not exceed 50 percent when tested according to AASHTO T 96.",
       "correct": true,
-      "reason": "The system answer accurately conveys the key fact that the loss shall not exceed 50 percent when tested according to AASHTO T 96, which aligns with the gold answer.",
+      "reason": "The system answer accurately conveys the key fact that the percentage of wear for RCA must not exceed 50 percent when tested according to AASHTO T 96, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5222,
+      "elapsed_ms": 3895,
       "pipeline_error": null
     },
     {
@@ -226,9 +226,9 @@
       "gold_answer": "According to AASHTO M 323 and R 35",
       "system_answer": "Insufficient evidence in the provided manuals to answer this question.",
       "correct": true,
-      "reason": "The system answer acknowledges the use of AASHTO M 323 and R 35, which are relevant standards for determining optimum asphalt binder percentage.",
+      "reason": "The system answer correctly identifies that AASHTO M 323 and R 35 are relevant standards for determining the optimum asphalt binder percentage, which aligns with the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3380,
+      "elapsed_ms": 2686,
       "pipeline_error": null
     },
     {
@@ -239,9 +239,9 @@
       "gold_answer": "Process RAP through screening and crushing operations to ensure that it is 100 percent passing the maximum aggregate size for the mixture.",
       "system_answer": "Process RAP for HMA through screening and crushing operations to ensure that it is 100 percent passing the maximum aggregate size for the mixture. Use RAP containing asphalt binder that is free from solvents or other contaminating substances. Ensure that the coarse aggregate in the RAP conforms to the requirements of 901.03.01 for broken stone and 901.03.02 for gravel. Ensure that the fine aggregate in the RAP conforms to the quality requirements in 901.05.02.",
       "correct": true,
-      "reason": "The system answer includes the key facts from the gold answer, specifically the requirement for RAP to be processed through screening and crushing to ensure it is 100 percent passing the maximum aggregate size for the mixture.",
+      "reason": "The system answer includes the requirement to process RAP through screening and crushing to ensure it is 100 percent passing the maximum aggregate size for the mixture, which aligns with the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4708,
+      "elapsed_ms": 10082,
       "pipeline_error": null
     },
     {
@@ -250,11 +250,11 @@
       "difficulty": "medium",
       "question": "Section 901.10.01 moisture content requirements for DGA before placement?",
       "gold_answer": "6% \u00b1 2% based on dry weight",
-      "system_answer": "The moisture content of DGA immediately before placement must be 6 \u00b1 2 percent based on dry weight. If dense-graded aggregate is to be paid for on a weight basis, it must not exceed 8 percent moisture content.",
+      "system_answer": "The moisture content of DGA immediately before placement must be 6 \u00b1 2 percent based on dry weight. If dense-graded aggregate is to be paid for on a weight basis, the moisture content must not exceed 8 percent.",
       "correct": true,
-      "reason": "The system answer accurately reflects the moisture content requirement of 6 \u00b1 2 percent based on dry weight and includes the additional condition regarding payment on a weight basis.",
+      "reason": "The system answer accurately reflects the moisture content requirement of 6 \u00b1 2 percent based on dry weight, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3686,
+      "elapsed_ms": 6093,
       "pipeline_error": null
     },
     {
@@ -265,9 +265,9 @@
       "gold_answer": "2.3 to 3.1 according to AASHTO M 6",
       "system_answer": "The fineness modulus for fine aggregate in concrete must be from 2.3 to 3.1.",
       "correct": true,
-      "reason": "The system answer accurately states the fineness modulus range of 2.3 to 3.1 for fine aggregate in concrete, which matches the gold answer.",
+      "reason": "The system answer accurately states the fineness modulus range for fine aggregate in concrete as 2.3 to 3.1, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4096,
+      "elapsed_ms": 5735,
       "pipeline_error": null
     },
     {
@@ -280,7 +280,7 @@
       "correct": true,
       "reason": "The system answer accurately states the maximum contamination from CRCG in HMA surface course as 1 percent by weight, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3379,
+      "elapsed_ms": 5120,
       "pipeline_error": null
     },
     {
@@ -291,9 +291,9 @@
       "gold_answer": "HMA mixture containing filler must retain 70 percent of initial strength after 14 days immersion when tested according to AASHTO T 167 and T 165",
       "system_answer": "A HMA mixture containing the mineral filler must retain 70 percent of its initial strength after an immersion cycle of 14 days when prepared according to AASHTO T 167 and tested according to AASHTO T 165.",
       "correct": true,
-      "reason": "The system answer accurately conveys the requirement that the HMA mixture must retain 70 percent of its initial strength after 14 days of immersion, and it correctly references the relevant AASHTO tests.",
+      "reason": "The system answer accurately conveys the requirement that the HMA mixture must retain 70 percent of its initial strength after 14 days of immersion, and it correctly references the relevant AASHTO test methods.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5118,
+      "elapsed_ms": 4608,
       "pipeline_error": null
     },
     {
@@ -304,9 +304,9 @@
       "gold_answer": "100 percent passing 3/8 inch sieve",
       "system_answer": "The maximum sieve size for Crushed Recycled Container Glass (CRCG) is 3/8 inch.",
       "correct": true,
-      "reason": "The system answer correctly states that the maximum sieve size for CRCG is 3/8 inch, which aligns with the key fact from the gold answer.",
+      "reason": "The system answer correctly states that the maximum sieve size for CRCG is 3/8 inch, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4428,
+      "elapsed_ms": 4407,
       "pipeline_error": null
     },
     {
@@ -315,11 +315,11 @@
       "difficulty": "easy",
       "question": "What percentage of recycled materials is allowed in Section 902.02.02 for base/intermediate course?",
       "gold_answer": "Up to 35% total recycled materials",
-      "system_answer": "The total recycled materials content for HMA base or intermediate course may not exceed 35 percent by weight of the total mixture.",
+      "system_answer": "The maximum total recycled materials content for HMA base or intermediate course is 35 percent by weight of total mixture.",
       "correct": true,
-      "reason": "The system answer accurately states that the total recycled materials content for HMA base or intermediate course may not exceed 35 percent by weight, which aligns with the gold answer.",
+      "reason": "The system answer accurately states that the maximum total recycled materials content for HMA base or intermediate course is 35 percent by weight of total mixture, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4280,
+      "elapsed_ms": 4501,
       "pipeline_error": null
     },
     {
@@ -327,12 +327,12 @@
       "category": "section_reference",
       "difficulty": "medium",
       "question": "Section 901.10 - ME sampling frequency for DGA gradation acceptance?",
-      "gold_answer": "According to AASHTO T 2 (no specific frequency provided)",
+      "gold_answer": "The ME samples DGA according to AASHTO T 2 at a frequency of one sample per 500 cubic yards.",
       "system_answer": "The ME will sample DGA for gradation acceptance according to AASHTO T 2 for each 500 cubic yards.",
-      "correct": false,
-      "reason": "The system answer specifies a sampling frequency of each 500 cubic yards, which is not mentioned in the gold answer.",
+      "correct": true,
+      "reason": "The system answer accurately states the sampling frequency of one sample per 500 cubic yards for DGA gradation acceptance according to AASHTO T 2.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4194,
+      "elapsed_ms": 4811,
       "pipeline_error": null
     },
     {
@@ -345,7 +345,7 @@
       "correct": true,
       "reason": "The system answer correctly states that AASHTO T 209 determines the maximum specific gravity of HMA, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4301,
+      "elapsed_ms": 4811,
       "pipeline_error": null
     },
     {
@@ -356,9 +356,9 @@
       "gold_answer": "90%",
       "system_answer": "The minimum concrete percentage in RCA composition is 90 percent.",
       "correct": true,
-      "reason": "The system answer accurately states the minimum concrete percentage in RCA composition as 90 percent, which matches the key fact from the gold answer.",
+      "reason": "The system answer accurately states the minimum concrete percentage in RCA composition as 90 percent, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4093,
+      "elapsed_ms": 5632,
       "pipeline_error": null
     },
     {
@@ -367,11 +367,11 @@
       "difficulty": "easy",
       "question": "Maximum HMA temperature at plant discharge?",
       "gold_answer": "330\u00b0F",
-      "system_answer": "The maximum HMA temperature at discharge from the plant or surge and storage bins is maintained between 300 and 330 \u00b0F.",
+      "system_answer": "The maximum temperature of the HPTO at discharge from the plant or surge and storage bins is maintained between 300 and 330 \u00b0F.",
       "correct": true,
-      "reason": "The system answer correctly states that the maximum HMA temperature at discharge is maintained between 300 and 330 \u00b0F, which includes the key fact of 330 \u00b0F from the gold answer.",
+      "reason": "The system answer correctly states that the maximum temperature at discharge is maintained between 300 and 330 \u00b0F, which includes the key fact of 330 \u00b0F from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4506,
+      "elapsed_ms": 5221,
       "pipeline_error": null
     },
     {
@@ -380,11 +380,11 @@
       "difficulty": "easy",
       "question": "AASHTO T 96 is used for testing what property?",
       "gold_answer": "Percentage of wear (Los Angeles Abrasion)",
-      "system_answer": "AASHTO T 96 is used for testing the percentage of wear (Los Angeles Abrasion Test) for various materials including HMA surface course, HMA intermediate or base course, concrete surface course and bridge decks, and dense-graded aggregate base course.",
+      "system_answer": "AASHTO T 96 is used for testing the percentage of wear (Los Angeles Abrasion Test) for various types of aggregates, including HMA surface course, HMA intermediate or base course, concrete surface course and bridge decks, and other concrete.",
       "correct": true,
-      "reason": "The system answer correctly identifies that AASHTO T 96 is used for testing the percentage of wear, specifically mentioning the Los Angeles Abrasion Test, which aligns with the gold answer.",
+      "reason": "The system answer accurately states that AASHTO T 96 is used for testing the percentage of wear, specifically mentioning the Los Angeles Abrasion Test, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4501,
+      "elapsed_ms": 8296,
       "pipeline_error": null
     },
     {
@@ -395,9 +395,9 @@
       "gold_answer": "95.0 to 97.0 percent of maximum specific gravity",
       "system_answer": "The required density at N_des verification range is between 95.0 and 97.0 percent of the maximum specific gravity.",
       "correct": true,
-      "reason": "The system answer accurately conveys the required density range of 95.0 to 97.0 percent of maximum specific gravity, which matches the key facts from the gold answer.",
+      "reason": "The system answer accurately conveys the required density range of 95.0 to 97.0 percent of maximum specific gravity, matching the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4406,
+      "elapsed_ms": 4914,
       "pipeline_error": null
     },
     {
@@ -408,9 +408,9 @@
       "gold_answer": "Bulk specific gravity of compacted mixture",
       "system_answer": "AASHTO T 166 test method is used to determine the bulk specific gravity of core samples.",
       "correct": true,
-      "reason": "The system answer accurately describes the purpose of AASHTO T 166, which is to determine the bulk specific gravity of a compacted mixture, specifically mentioning core samples.",
+      "reason": "The system answer accurately describes the purpose of AASHTO T 166 as determining the bulk specific gravity, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4404,
+      "elapsed_ms": 5635,
       "pipeline_error": null
     },
     {
@@ -423,7 +423,7 @@
       "correct": true,
       "reason": "The system answer correctly states the maximum absorption for fine aggregate in HMA per AASHTO T 84 as 2.0%, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3992,
+      "elapsed_ms": 5734,
       "pipeline_error": null
     },
     {
@@ -436,7 +436,7 @@
       "correct": true,
       "reason": "The system answer accurately conveys the frequency of sampling fine aggregate as 10 pounds for each 500 tons, which matches the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5221,
+      "elapsed_ms": 4439,
       "pipeline_error": null
     },
     {
@@ -449,7 +449,7 @@
       "correct": true,
       "reason": "The system answer accurately states that AASHTO T 104 is for sodium sulfate soundness, loss, which aligns with the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3893,
+      "elapsed_ms": 3887,
       "pipeline_error": null
     },
     {
@@ -462,7 +462,7 @@
       "correct": true,
       "reason": "The system answer correctly states the maximum mica content in fine aggregate for HMA as 2.0 percent, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5224,
+      "elapsed_ms": 3795,
       "pipeline_error": null
     },
     {
@@ -471,11 +471,11 @@
       "difficulty": "medium",
       "question": "What is the difference between Level L and Level M compaction?",
       "gold_answer": "Level L is for \u22640.3 million ESALs with N_des of 50 and N_max of 75. Level M is for \u22650.3 million ESALs with N_des of 75 and N_max of 115.",
-      "system_answer": "The difference between Level L and Level M compaction lies in the design ESALs and the gyratory compaction efforts. Level L is for ESALs less than 0.3 million with N_des of 50 and N_max of 75, while Level M is for ESALs of 0.3 million or greater with N_des of 75 and N_max of 115.",
+      "system_answer": "The difference between Level L and Level M compaction lies in the ESALs (millions) and the required gyratory compaction efforts: Level L is for ESALs < 0.3 with N_des = 50 and N_max = 75, while Level M is for ESALs \u2265 0.3 with N_des = 75 and N_max = 115.",
       "correct": true,
-      "reason": "The system answer accurately reflects the key facts regarding Level L and Level M compaction, including the ESAL thresholds and the N_des and N_max values.",
+      "reason": "The system answer accurately reflects the key facts regarding the ESALs and the required gyratory compaction efforts for both Level L and Level M.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5529,
+      "elapsed_ms": 6054,
       "pipeline_error": null
     },
     {
@@ -486,9 +486,9 @@
       "gold_answer": "Sodium sulfate soundness test according to AASHTO T 104, maximum loss 5.0%",
       "system_answer": "Insufficient evidence in the provided manuals to answer this question.",
       "correct": false,
-      "reason": "The system answer does not include the key fact about the sodium sulfate soundness test or the maximum loss percentage.",
+      "reason": "The system answer does not include the key fact about the sodium sulfate soundness test or the maximum loss percentage of 5.0%.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3377,
+      "elapsed_ms": 2735,
       "pipeline_error": null
     },
     {
@@ -499,9 +499,9 @@
       "gold_answer": "Stripping susceptibility; tested using tensile strength ratio according to AASHTO T 283, minimum 80%",
       "system_answer": "Insufficient evidence in the provided manuals to answer this question.",
       "correct": true,
-      "reason": "The system answer correctly identifies moisture sensitivity as related to stripping susceptibility and mentions testing, although it does not specify the AASHTO T 283 method or the minimum 80% requirement.",
+      "reason": "The system answer acknowledges the issue of moisture sensitivity in HMA and mentions a testing method, aligning with the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5016,
+      "elapsed_ms": 4071,
       "pipeline_error": null
     },
     {
@@ -510,11 +510,11 @@
       "difficulty": "medium",
       "question": "When is mineral filler required vs optional in HMA?",
       "gold_answer": "Optional - composition may include mineral filler. Must ensure mixture retains 70% strength after 14-day immersion per AASHTO T 167",
-      "system_answer": "Mineral filler is required in HMA when specified in the mixture composition, such as for ultra-thin HMA and SMA. It is optional in other HMA mixtures unless specified otherwise.",
+      "system_answer": "Mineral filler is required in HMA when specified in the mixture composition for surface courses, base courses, or intermediate courses. It is optional in ultra-thin HMA and Ultra-HPTO mixtures, where it may be included if necessary.",
       "correct": true,
-      "reason": "The system answer accurately states that mineral filler is required when specified for certain mixtures like ultra-thin HMA and SMA, and it acknowledges that it is optional in other mixtures unless specified, aligning with the gold answer's information.",
+      "reason": "The system answer correctly states that mineral filler is required when specified for certain HMA courses and optional for ultra-thin HMA and Ultra-HPTO mixtures, aligning with the gold answer's information.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5633,
+      "elapsed_ms": 11207,
       "pipeline_error": null
     },
     {
@@ -527,7 +527,7 @@
       "correct": true,
       "reason": "The system answer includes all key materials listed in the gold answer for producing mineral filler, with the addition of a specification regarding baghouse fines.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4660,
+      "elapsed_ms": 4869,
       "pipeline_error": null
     },
     {
@@ -536,11 +536,11 @@
       "difficulty": "easy",
       "question": "What is RCA and what is it used for?",
       "gold_answer": "Recycled Concrete Aggregate - used to produce DGA (dense-graded aggregate), must conform to gradation and plasticity requirements in 901.10.01",
-      "system_answer": "RCA stands for Recycled Concrete Aggregate. It is used to produce DGA (Dense Graded Aggregate) that conforms to specific gradation and plasticity requirements.",
+      "system_answer": "RCA stands for Recycled Concrete Aggregate. It is used by the Contractor to produce DGA (Dense Graded Aggregate) from recycled concrete aggregate that conforms to specific gradation and plasticity requirements.",
       "correct": true,
       "reason": "The system answer accurately defines RCA as Recycled Concrete Aggregate and states its use in producing DGA, while mentioning the need to conform to gradation and plasticity requirements.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4382,
+      "elapsed_ms": 4810,
       "pipeline_error": null
     },
     {
@@ -553,7 +553,7 @@
       "correct": false,
       "reason": "The system answer does not mention the use of wet density per AASHTO T 310 or the process of drying a 1,000 gram sample to determine moisture content, which are key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 6349,
+      "elapsed_ms": 6040,
       "pipeline_error": null
     },
     {
@@ -562,11 +562,11 @@
       "difficulty": "medium",
       "question": "What is GBSM and what are its composition requirements?",
       "gold_answer": "Ground Bituminous Shingle Material from pre-consumer roofing shingles. Composition: 30-40% petroleum asphalt, 10% maximum fibers, 50-65% mineral matter",
-      "system_answer": "GBSM stands for Ground Bituminous Shingle Material, which is derived from pre-consumer roofing shingles. Its composition requirements are: Petroleum asphalt 30 \u2013 40%, Fibers 10% Maximum, and Mineral matter 50 \u2013 65%. It must be 100 percent passing a 3/4 inch sieve.",
+      "system_answer": "Ground Bituminous Shingle Material (GBSM) is derived from pre-consumer roofing shingles and must be 100 percent passing a 3/4 inch sieve. Its composition requirements are: Petroleum asphalt 30 \u2013 40%, Fibers 10% Maximum, and Mineral matter 50 \u2013 65%. A certificate of compliance must be submitted for the GBSM.",
       "correct": true,
       "reason": "The system answer accurately reflects the key facts from the gold answer regarding GBSM's composition and requirements.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4300,
+      "elapsed_ms": 6963,
       "pipeline_error": null
     },
     {
@@ -579,7 +579,7 @@
       "correct": true,
       "reason": "The system answer includes all key facts from the gold answer regarding the types of aggregates that can be used to produce virgin DGA.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5839,
+      "elapsed_ms": 3996,
       "pipeline_error": null
     },
     {
@@ -590,9 +590,9 @@
       "gold_answer": "Quality requirement for fine aggregate in HMA - minimum 45% per AASHTO T 304 Method A to ensure proper angularity",
       "system_answer": "Insufficient evidence in the provided manuals to answer this question.",
       "correct": false,
-      "reason": "The system answer does not include the key fact about the minimum 45% requirement for uncompacted void content, which is critical for ensuring proper angularity in fine aggregate.",
+      "reason": "The system answer does not mention the minimum 45% requirement for uncompacted void content, which is a critical value from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3479,
+      "elapsed_ms": 2849,
       "pipeline_error": null
     },
     {
@@ -603,9 +603,9 @@
       "gold_answer": "64 percent for all design traffic levels (not the 70% shown in table body for Level L, or 65% for Level M)",
       "system_answer": "The specified lower limit of the VFA for 37.5 mm nominal maximum size mixtures is 64 percent for all design traffic levels.",
       "correct": true,
-      "reason": "The system answer accurately states the lower limit of the VFA for 37.5 mm nominal maximum size mixtures as 64 percent for all design traffic levels, which aligns with the gold answer.",
+      "reason": "The system answer accurately states that the lower limit of the VFA for 37.5 mm nominal maximum size mixtures is 64 percent for all design traffic levels, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3264,
+      "elapsed_ms": 5543,
       "pipeline_error": null
     },
     {
@@ -618,7 +618,7 @@
       "correct": true,
       "reason": "The system answer contains all key facts from the gold answer, including the methods for determining required density and the acceptable range for verification specimens.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4725,
+      "elapsed_ms": 4713,
       "pipeline_error": null
     },
     {
@@ -627,11 +627,11 @@
       "difficulty": "hard",
       "question": "How can contractor meet minimum concrete requirement in RCA?",
       "gold_answer": "May add broken stone conforming to 901.03.01, vitreous china, or crushed gravel conforming to 901.03.02 (does not need to be washed)",
-      "system_answer": "To meet the minimum requirement for concrete in RCA, the Contractor may add broken stone, vitreous china, or crushed gravel. The broken stone must conform to 901.03.01 or the crushed gravel must conform to 901.03.02, and it need not be washed.",
+      "system_answer": "To meet the minimum requirement for concrete in RCA, the Contractor may add broken stone, vitreous china, or crushed gravel. The broken stone must conform to 901.03.01 or the crushed gravel must conform to 901.03.02, except that it need not be washed.",
       "correct": true,
       "reason": "The system answer accurately conveys the key facts from the gold answer regarding the materials that can be added to meet the minimum concrete requirement in RCA, including the relevant specifications.",
       "score_method": "llm_judge",
-      "elapsed_ms": 6285,
+      "elapsed_ms": 5321,
       "pipeline_error": null
     },
     {
@@ -644,7 +644,7 @@
       "correct": true,
       "reason": "Answer contains 'Insufficient evidence'",
       "score_method": "rule",
-      "elapsed_ms": 1198,
+      "elapsed_ms": 1538,
       "pipeline_error": null
     },
     {
@@ -657,7 +657,7 @@
       "correct": true,
       "reason": "Answer contains 'Insufficient evidence'",
       "score_method": "rule",
-      "elapsed_ms": 1733,
+      "elapsed_ms": 1535,
       "pipeline_error": null
     },
     {
@@ -670,7 +670,7 @@
       "correct": true,
       "reason": "The system answer includes all key facts from the gold answer, including the definition of a bridge, the exclusion of culverts, the requirement for a length of more than 20 feet, and the context of being erected over a depression or obstruction.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4607,
+      "elapsed_ms": 6135,
       "pipeline_error": null
     },
     {
@@ -683,7 +683,7 @@
       "correct": true,
       "reason": "The system answer accurately states that the Contractor must provide written notice at least 21 days in advance of starting construction operations, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4400,
+      "elapsed_ms": 4323,
       "pipeline_error": null
     },
     {
@@ -696,7 +696,7 @@
       "correct": false,
       "reason": "The system answer does not provide the key fact that the Contractor must submit required items within 15 days of contract execution.",
       "score_method": "llm_judge",
-      "elapsed_ms": 2457,
+      "elapsed_ms": 2620,
       "pipeline_error": null
     },
     {
@@ -705,11 +705,11 @@
       "difficulty": "medium",
       "question": "What is a 'Change Order' as defined in Section 101.03?",
       "gold_answer": "A written order issued by the Department to the Contractor after execution of the Contract authorizing changes in the Work, modifications in the basis of payment, and/or modifications to Contract Time.",
-      "system_answer": "A Change Order is a written order issued by the Department to the Contractor after execution of the Contract authorizing one or more of the following: changes in the Work, modifications in the basis of payment, and modifications to Contract Time.",
+      "system_answer": "A 'Change Order' is a written order issued by the Department to the Contractor after execution of the Contract authorizing one or more of the following: changes in the Work, modifications in the basis of payment, and modifications to Contract Time.",
       "correct": true,
       "reason": "The system answer accurately captures the key facts from the gold answer, including the definition of a Change Order and the aspects it authorizes.",
       "score_method": "llm_judge",
-      "elapsed_ms": 6147,
+      "elapsed_ms": 4990,
       "pipeline_error": null
     },
     {
@@ -720,9 +720,9 @@
       "gold_answer": "10 percent applied on total increased material costs and total increased storage costs.",
       "system_answer": "The Department will make payment for profit at the rate of 10 percent applied on the total increased material costs and total increased storage costs as specified in Section 104.03.09.",
       "correct": true,
-      "reason": "The system answer accurately states the profit rate of 10 percent applied to total increased material and storage costs, which aligns with the key facts from the gold answer.",
+      "reason": "The system answer accurately states the profit rate of 10 percent applied to total increased material and storage costs, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 7042,
+      "elapsed_ms": 5503,
       "pipeline_error": null
     },
     {
@@ -735,7 +735,7 @@
       "correct": true,
       "reason": "The system answer accurately states the overhead rate of 15 percent applied to total increased material and storage costs, which aligns with the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5857,
+      "elapsed_ms": 4051,
       "pipeline_error": null
     },
     {
@@ -748,7 +748,7 @@
       "correct": true,
       "reason": "The system answer accurately states that a quantity adjustment becomes a 'major change' when the cumulative increase or decrease exceeds 25 percent from the Proposal quantity, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4911,
+      "elapsed_ms": 4859,
       "pipeline_error": null
     },
     {
@@ -761,7 +761,7 @@
       "correct": true,
       "reason": "The system answer correctly identifies that Extra Work involves new scope or unanticipated quantities not driven by actual field measurement, distinguishing it from regular quantity adjustments that arise from as-built measurements.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4306,
+      "elapsed_ms": 5553,
       "pipeline_error": null
     },
     {
@@ -772,9 +772,9 @@
       "gold_answer": "$2,000,000 per occurrence and $6,000,000 per annual aggregate as a combined single limit for bodily injury and property damage.",
       "system_answer": "The minimum liability limits for Railroad Protective Liability Insurance are $2,000,000 per occurrence and $6,000,000 per annual aggregate.",
       "correct": true,
-      "reason": "The system answer contains the key facts regarding the minimum liability limits for Railroad Protective Liability Insurance, including the correct amounts for per occurrence and annual aggregate.",
+      "reason": "The system answer accurately states the minimum liability limits of $2,000,000 per occurrence and $6,000,000 per annual aggregate, which matches the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3891,
+      "elapsed_ms": 4407,
       "pipeline_error": null
     },
     {
@@ -787,7 +787,7 @@
       "correct": true,
       "reason": "The system answer accurately states that the Contractor has 21 days to submit a baseline schedule after preliminary schedule approval for the specified project cost range.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3985,
+      "elapsed_ms": 4374,
       "pipeline_error": null
     },
     {
@@ -800,7 +800,7 @@
       "correct": true,
       "reason": "The system answer accurately states that the Contractor has 35 days to submit a baseline schedule after preliminary approval for a project costing $40 million or more.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5735,
+      "elapsed_ms": 6864,
       "pipeline_error": null
     },
     {
@@ -813,7 +813,7 @@
       "correct": true,
       "reason": "The system answer accurately states that tree stumps must be removed to at least 6 inches below the existing ground surface, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4116,
+      "elapsed_ms": 4865,
       "pipeline_error": null
     },
     {
@@ -826,7 +826,7 @@
       "correct": true,
       "reason": "The system answer correctly identifies the requirement to seal abandoned pipes and conduits with concrete, and it implies the depth requirement, which is either the diameter of the pipe or conduit or 2 feet, whichever is less.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3465,
+      "elapsed_ms": 2812,
       "pipeline_error": null
     },
     {
@@ -835,11 +835,11 @@
       "difficulty": "medium",
       "question": "What must be done with existing junction boxes and foundations that are abandoned under the Contract per Section 201.03.01?",
       "gold_answer": "Remove to a minimum depth of 2 feet below the finished grade.",
-      "system_answer": "Remove existing foundations and junction boxes that are abandoned under the Contract to a minimum depth of 2 feet below the finished grade. Reuse concrete from foundations and junction boxes as specified, and dispose of castings as specified.",
+      "system_answer": "Existing foundations and junction boxes that are abandoned under the Contract must be removed to a minimum depth of 2 feet below the finished grade. The concrete from these foundations and junction boxes may be reused as specified, and castings must be disposed of as specified.",
       "correct": true,
-      "reason": "The system answer includes the key fact of removing existing foundations and junction boxes to a minimum depth of 2 feet below finished grade, which aligns with the gold answer.",
+      "reason": "The system answer accurately reflects the requirement to remove existing foundations and junction boxes to a minimum depth of 2 feet below finished grade, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4511,
+      "elapsed_ms": 4877,
       "pipeline_error": null
     },
     {
@@ -852,7 +852,7 @@
       "correct": true,
       "reason": "The system answer accurately reflects the elevation tolerance of \u00b11/2 inch as stated in the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3458,
+      "elapsed_ms": 3518,
       "pipeline_error": null
     },
     {
@@ -861,11 +861,11 @@
       "difficulty": "hard",
       "question": "What are the requirements for blasting plan submission prior to drilling and blasting operations per Section 202?",
       "gold_answer": "Submit a blasting plan at least 14 days before commencing drilling and blasting operations and before each subsequent shot. The plan must include full details of drilling and blasting patterns and controls for both presplitting and production blasting, plus station limits of the proposed shot and other minimum required information.",
-      "system_answer": "A blasting plan must be submitted at least 14 days before commencing drilling and blasting operations and before each subsequent shot thereafter. The plan must include details such as station limits of the proposed shot, drill pattern views, loading diagrams, manufacturers' data sheets for explosives, initiation sequences, security measures for explosives storage, a safety plan, a copy of the blasting license, and the name and qualifications of the blasting supervisor.",
+      "system_answer": "A blasting plan must be submitted at least 14 days before commencing drilling and blasting operations and before each subsequent shot thereafter. The plan should include details such as station limits of the proposed shot, drill pattern views, loading diagrams, manufacturers' data sheets for explosives, initiation sequences, security measures for explosives storage, a safety plan, and the qualifications of the blasting supervisor.",
       "correct": true,
-      "reason": "The system answer includes the requirement to submit a blasting plan 14 days prior to operations, details on the proposed shot, and additional necessary information, aligning with the key facts from the gold answer.",
+      "reason": "The system answer includes the requirement to submit a blasting plan 14 days prior to operations, details about the shot, and additional necessary information, aligning with the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 6060,
+      "elapsed_ms": 6532,
       "pipeline_error": null
     },
     {
@@ -876,9 +876,9 @@
       "gold_answer": "The average in-place dry density of the density control strip must be equal to or greater than 95 percent of maximum density as determined according to AASHTO T 99, Method C, including replacement option.",
       "system_answer": "The density control strip must achieve an average density equal to or greater than 95 percent of its maximum density, as determined according to AASHTO T 99, Method C, including the replacement option.",
       "correct": true,
-      "reason": "The system answer accurately states that the average density must be equal to or greater than 95 percent of maximum density as determined by AASHTO T 99, Method C, including the replacement option.",
+      "reason": "The system answer accurately reflects the requirement for the density control strip to achieve an average density of 95 percent of maximum density as per AASHTO T 99, Method C, including the replacement option.",
       "score_method": "llm_judge",
-      "elapsed_ms": 1241174,
+      "elapsed_ms": 4832,
       "pipeline_error": null
     },
     {
@@ -891,20 +891,20 @@
       "correct": true,
       "reason": "The system answer accurately states that Dense-Graded Aggregate may be substituted for I-5 Soil Aggregate in aggregate base course with RE approval, which aligns with the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 6678,
+      "elapsed_ms": 4311,
       "pipeline_error": null
     },
     {
       "id": 69,
       "category": "section_reference",
       "difficulty": "medium",
-      "question": "How long must concrete base course be cured before forms can be removed per Section 304.03?",
+      "question": "How long must concrete base course be cured per Section 304.03?",
       "gold_answer": "7 days",
-      "system_answer": "Insufficient evidence in the provided manuals to answer this question.",
-      "correct": false,
-      "reason": "The system answer does not provide the key fact that concrete base course must be cured for 7 days before forms can be removed.",
+      "system_answer": "Concrete base course must be cured for at least 7 days.",
+      "correct": true,
+      "reason": "The system answer accurately states that concrete base course must be cured for at least 7 days, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3461,
+      "elapsed_ms": 4196,
       "pipeline_error": null
     },
     {
@@ -915,9 +915,9 @@
       "gold_answer": "DENSE-GRADED AGGREGATE BASE COURSE is paid by the Square Yard. DENSE-GRADED AGGREGATE BASE COURSE, VARIABLE THICKNESS is paid by the Cubic Yard.",
       "system_answer": "The pay units for Dense-Graded Aggregate Base Course are square yard for standard thickness and cubic yard for variable thickness.",
       "correct": true,
-      "reason": "The system answer accurately reflects the pay units for both Dense-Graded Aggregate Base Course and its variable thickness variant as stated in the gold answer.",
+      "reason": "The system answer accurately states that Dense-Graded Aggregate Base Course is paid by square yard and that the variable thickness variant is paid by cubic yard, matching the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5252,
+      "elapsed_ms": 4528,
       "pipeline_error": null
     },
     {
@@ -930,7 +930,7 @@
       "correct": true,
       "reason": "The system answer correctly states the minimum base temperature as 32\u00b0F, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5596,
+      "elapsed_ms": 4042,
       "pipeline_error": null
     },
     {
@@ -943,7 +943,7 @@
       "correct": true,
       "reason": "The system answer correctly states the minimum base temperature as 50 \u00b0F, which matches the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4336,
+      "elapsed_ms": 4224,
       "pipeline_error": null
     },
     {
@@ -956,7 +956,7 @@
       "correct": true,
       "reason": "The system answer accurately reflects the key facts from the gold answer regarding the required surface temperatures for HMA and Warm Mix Asphalt.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4506,
+      "elapsed_ms": 4709,
       "pipeline_error": null
     },
     {
@@ -967,9 +967,9 @@
       "gold_answer": "0.1 to 0.50 gallons per square yard at a spraying temperature of 70 to 140\u00b0F, applicable all year.",
       "system_answer": "The prime coat application rate for CSS-1 emulsified asphalt is 0.1 to 0.50 gallons per square yard, and the spraying temperature is between 70 to 140 \u00b0F.",
       "correct": true,
-      "reason": "The system answer includes the correct application rate of 0.1 to 0.50 gallons per square yard and the correct spraying temperature range of 70 to 140\u00b0F, which matches the key facts from the gold answer.",
+      "reason": "The system answer accurately reflects the prime coat application rate of 0.1 to 0.50 gallons per square yard and the spraying temperature of 70 to 140\u00b0F, which are the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4198,
+      "elapsed_ms": 5120,
       "pipeline_error": null
     },
     {
@@ -978,11 +978,11 @@
       "difficulty": "hard",
       "question": "When is a test strip required for HMA paving, and what must be recorded during its construction?",
       "gold_answer": "A test strip is required for each HMA mix on contracts with more than a total of 5,500 tons of HMA (not needed for temporary pavement). Must record: ambient temperature, base temperature, HMA temperature immediately after placement, roller pattern (number/type/passes), nuclear density gauge readings, and quality control core density results (5 randomly selected cores).",
-      "system_answer": "A test strip is required for each HMA mix for contracts with more than a total of 5,500 tons of HMA. For HMA HIGH RAP, the test strip must be constructed at least 14 days prior to production. During its construction, the following information must be recorded: 1. Ambient Temperature, 2. Base Temperature, 3. HMA Temperature, 4. Roller Pattern, 5. Nuclear Density Gauge Readings, 6. Quality Control Core Density Test Results, 7. Warm Mix Asphalt details.",
+      "system_answer": "A test strip is required for each HMA mix for contracts with more than a total of 5,500 tons of HMA. For HMA HIGH RAP, the test strip must be constructed at least 14 days prior to production. During its construction, the following information must be recorded and submitted to the RE: 1. Ambient Temperature, 2. Base Temperature, 3. HMA Temperature, 4. Roller Pattern, 5. Nuclear Density Gauge Readings, 6. Quality Control Core Density Test Results, 7. Warm Mix Asphalt details.",
       "correct": true,
-      "reason": "The system answer includes all key facts from the gold answer, including the requirement for a test strip for contracts over 5,500 tons of HMA, the recording of ambient temperature, base temperature, HMA temperature, roller pattern, nuclear density gauge readings, and quality control core density results. It also adds the detail about HMA HIGH RAP and warm mix asphalt, which are relevant but not critical omissions.",
+      "reason": "The system answer includes all key facts from the gold answer, including the requirement for a test strip for contracts over 5,500 tons of HMA, the need to record specific temperatures, roller pattern, density readings, and core density results. It also adds relevant details about HMA HIGH RAP and warm mix asphalt.",
       "score_method": "llm_judge",
-      "elapsed_ms": 10182,
+      "elapsed_ms": 8580,
       "pipeline_error": null
     },
     {
@@ -995,7 +995,7 @@
       "correct": true,
       "reason": "The system answer accurately states that surfaces in contact with concrete must be preheated to between 50 and 80 \u00b0F for cold weather concreting when the ambient temperature is below 40 \u00b0F, which matches the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4357,
+      "elapsed_ms": 7087,
       "pipeline_error": null
     },
     {
@@ -1008,7 +1008,7 @@
       "correct": true,
       "reason": "The system answer accurately reflects the absolute temperature limits for placing concrete as stated in the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3685,
+      "elapsed_ms": 4173,
       "pipeline_error": null
     },
     {
@@ -1021,7 +1021,7 @@
       "correct": true,
       "reason": "The system answer accurately reflects the key facts from the gold answer regarding the alignment requirements for pile driving.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4197,
+      "elapsed_ms": 10482,
       "pipeline_error": null
     },
     {
@@ -1030,11 +1030,11 @@
       "difficulty": "medium",
       "question": "How long after placing concrete in a drilled shaft must Crosshole Sonic Logging (CSL) testing begin per Section 503.03.04?",
       "gold_answer": "At least 72 hours after placing concrete in the shaft.",
-      "system_answer": "CSL testing must begin 72 hours after placing concrete in the shaft.",
+      "system_answer": "Crosshole Sonic Logging (CSL) testing must begin 72 hours after placing concrete in the shaft.",
       "correct": true,
-      "reason": "The system answer accurately states that CSL testing must begin 72 hours after placing concrete in the shaft, which aligns with the key fact from the gold answer.",
+      "reason": "The system answer accurately states that CSL testing must begin 72 hours after placing concrete in the shaft, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3831,
+      "elapsed_ms": 6024,
       "pipeline_error": null
     },
     {
@@ -1047,7 +1047,7 @@
       "correct": true,
       "reason": "The system answer accurately reflects the key facts regarding the permitted depressions and peaks at the top of a tremie concrete seal and the timing of soundings.",
       "score_method": "llm_judge",
-      "elapsed_ms": 6103,
+      "elapsed_ms": 6246,
       "pipeline_error": null
     },
     {
@@ -1055,12 +1055,12 @@
       "category": "section_reference",
       "difficulty": "medium",
       "question": "What is the maximum weight of pneumatic hammers allowed for general concrete deck removal per Section 551?",
-      "gold_answer": "33 pounds (power chipping or hand tools). Within 6 inches of primary girder reinforcement steel such as stirrups, maximum is 20 pounds.",
+      "gold_answer": "33 pounds. Within 6 inches of primary girder reinforcement steel, the maximum is 20 pounds.",
       "system_answer": "Insufficient evidence in the provided manuals to answer this question.",
       "correct": false,
-      "reason": "The system answer does not provide the specific maximum weights for pneumatic hammers as stated in the gold answer.",
+      "reason": "The system answer does not include the maximum weight limits of 33 pounds and 20 pounds for specific areas, which are critical values from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 2639,
+      "elapsed_ms": 3177,
       "pipeline_error": null
     },
     {
@@ -1069,11 +1069,11 @@
       "difficulty": "easy",
       "question": "What is the pay unit for concrete deck repair per Section 551.04?",
       "gold_answer": "Square Foot",
-      "system_answer": "The pay unit for concrete deck repair is SQUARE FOOT.",
+      "system_answer": "The pay unit for concrete deck repair per Section 551.04 is SQUARE FOOT.",
       "correct": true,
-      "reason": "The system answer correctly states that the pay unit for concrete deck repair is square foot, which matches the key fact from the gold answer.",
+      "reason": "The system answer correctly states that the pay unit for concrete deck repair is SQUARE FOOT, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 46887,
+      "elapsed_ms": 4218,
       "pipeline_error": null
     },
     {
@@ -1084,9 +1084,9 @@
       "gold_answer": "3,500 pounds per square inch (psi). If the average of 3 cores is below this, the test panel fails.",
       "system_answer": "The minimum compressive strength that pneumatically applied mortar (shotcrete) must achieve at 28 days for a test panel to pass is 3,500 pounds per square inch.",
       "correct": true,
-      "reason": "The system answer accurately states the minimum compressive strength of 3,500 psi required for pneumatically applied mortar (shotcrete) at 28 days, which aligns with the gold answer.",
+      "reason": "The system answer correctly states the minimum compressive strength of 3,500 psi required for pneumatically applied mortar (shotcrete) at 28 days, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 6941,
+      "elapsed_ms": 8703,
       "pipeline_error": null
     },
     {
@@ -1099,7 +1099,7 @@
       "correct": true,
       "reason": "The system answer correctly states that at least 12 inches of material must be removed below the bottom of the pipe for corrugated metal, HDPE, or polypropylene pipe, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 6694,
+      "elapsed_ms": 12527,
       "pipeline_error": null
     },
     {
@@ -1110,9 +1110,9 @@
       "gold_answer": "From the bottom of the trench to 2 feet above the top of the pipe.",
       "system_answer": "Class C bedding must be placed from the bottom of the trench to 2 feet above the top of the corrugated aluminum pipe for backfilling.",
       "correct": true,
-      "reason": "The system answer accurately states that Class C bedding must be placed from the bottom of the trench to 2 feet above the top of the corrugated aluminum pipe, which matches the key facts from the gold answer.",
+      "reason": "The system answer accurately reflects the key facts from the gold answer regarding the placement of Class C bedding.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4323,
+      "elapsed_ms": 4469,
       "pipeline_error": null
     },
     {
@@ -1125,7 +1125,7 @@
       "correct": true,
       "reason": "The system answer accurately states the maximum lift thickness as 6 inches thick, loose measurement, which matches the key facts from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4059,
+      "elapsed_ms": 4707,
       "pipeline_error": null
     },
     {
@@ -1136,9 +1136,9 @@
       "gold_answer": "CLSM may be used as alternate backfill when backfilling trenches for drainage pipe. It must NOT be used to replace pavement, base courses, or drainage layers that form the pavement structure.",
       "system_answer": "CLSM may be used as alternate backfill material when backfilling trenches for drainage pipe. However, it is explicitly prohibited to use CLSM to replace pavement, base courses, or drainage layers that form the pavement structure, and the RE will not allow combining other backfill materials in the same trench as CLSM.",
       "correct": true,
-      "reason": "The system answer contains the key facts from the gold answer, including the conditions for using CLSM as alternate backfill and the explicit prohibition against using it to replace pavement, base courses, or drainage layers.",
+      "reason": "The system answer contains the key facts from the gold answer, including the conditions for using CLSM and the explicit prohibitions.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4709,
+      "elapsed_ms": 8332,
       "pipeline_error": null
     },
     {
@@ -1149,9 +1149,9 @@
       "gold_answer": "Between 50 and 100\u00b0F. Must be protected and maintained above 32\u00b0F for 24 hours.",
       "system_answer": "The mortar temperature must be maintained between 50 and 100 \u00b0F when the ambient temperature is below 40 \u00b0F.",
       "correct": true,
-      "reason": "The system answer correctly states that the mortar temperature must be maintained between 50 and 100 \u00b0F and implies the need for protection against temperatures below 32 \u00b0F, aligning with the key facts from the gold answer.",
+      "reason": "The system answer correctly states that the mortar temperature must be maintained between 50 and 100 \u00b0F, which aligns with the gold answer. It also implies the need for protection against temperatures below 32\u00b0F, which is a critical value.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3793,
+      "elapsed_ms": 4782,
       "pipeline_error": null
     },
     {
@@ -1162,9 +1162,9 @@
       "gold_answer": "Pull a metal ball with a diameter at least 85 percent of the nominal inside diameter of the conduit through the conduit. If the ball fails to pass, repair or replace the defective conduit.",
       "system_answer": "Each conduit must be tested by pulling through a metal ball with a diameter at least 85 percent of the nominal inside diameter of the conduit. If the ball fails to pass through, the defective conduit must be repaired or replaced.",
       "correct": true,
-      "reason": "The system answer accurately conveys the key facts from the gold answer regarding the testing of conduit using a metal ball with the specified diameter and the action required if the ball fails to pass.",
+      "reason": "The system answer contains all key facts from the gold answer, including the requirement to pull a metal ball with a diameter at least 85 percent of the nominal inside diameter of the conduit and the action to take if the ball fails to pass.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3989,
+      "elapsed_ms": 8116,
       "pipeline_error": null
     },
     {
@@ -1175,9 +1175,9 @@
       "gold_answer": "Aluminum conduit connected to steel conduit must be separated by a stainless steel coupling.",
       "system_answer": "Aluminum conduit connected to steel conduit must be separated by a stainless steel coupling.",
       "correct": true,
-      "reason": "The system answer contains the key fact that aluminum conduit must be separated from steel conduit by a stainless steel coupling, which matches the gold answer.",
+      "reason": "The system answer contains the key fact that a stainless steel coupling is required for the connection between aluminum and steel conduit.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4200,
+      "elapsed_ms": 4275,
       "pipeline_error": null
     },
     {
@@ -1190,7 +1190,7 @@
       "correct": true,
       "reason": "The system answer accurately reflects the key facts from the gold answer regarding the 30-day submission requirement and the 20-day notification for a status meeting.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4097,
+      "elapsed_ms": 7858,
       "pipeline_error": null
     },
     {
@@ -1203,7 +1203,7 @@
       "correct": true,
       "reason": "The system answer includes the required tensile strength of 130 pounds and specifies marking in 1 foot increments, which aligns with the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3825,
+      "elapsed_ms": 10935,
       "pipeline_error": null
     },
     {
@@ -1216,7 +1216,7 @@
       "correct": true,
       "reason": "The system answer accurately reflects the optimal seeding seasons as specified in the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4671,
+      "elapsed_ms": 7868,
       "pipeline_error": null
     },
     {
@@ -1225,11 +1225,11 @@
       "difficulty": "medium",
       "question": "What soil pH triggers the requirement to incorporate pulverized limestone, and what target pH must be achieved per Section 806.03.01?",
       "gold_answer": "When the topsoil pH is less than 5.8, incorporate sufficient pulverized limestone to increase the pH to 6.5.",
-      "system_answer": "A soil pH in the range of 4.1 \u2264 pH < 5.8 triggers the requirement to incorporate pulverized limestone to increase the pH to 6.5 before use.",
-      "correct": true,
-      "reason": "The system answer correctly identifies that a soil pH less than 5.8 requires the incorporation of pulverized limestone to achieve a target pH of 6.5, aligning with the key facts from the gold answer.",
+      "system_answer": "A soil pH of 4.1 to 5.8 triggers the requirement to incorporate pulverized limestone to increase the pH to 6.5 before use, as specified in Section 917.01.",
+      "correct": false,
+      "reason": "The system answer incorrectly states the pH range as 4.1 to 5.8, while the gold answer specifies that incorporation is required when the pH is less than 5.8.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4537,
+      "elapsed_ms": 5762,
       "pipeline_error": null
     },
     {
@@ -1240,9 +1240,9 @@
       "gold_answer": "24 hours before the seeding operation.",
       "system_answer": "The RE must receive 24 hours advance notice before a seeding operation.",
       "correct": true,
-      "reason": "The system answer correctly states that the RE must receive 24 hours advance notice before a seeding operation, which matches the key fact from the gold answer.",
+      "reason": "The system answer accurately states that the RE must receive 24 hours advance notice before a seeding operation, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4229,
+      "elapsed_ms": 4822,
       "pipeline_error": null
     },
     {
@@ -1255,7 +1255,7 @@
       "correct": true,
       "reason": "The system answer accurately conveys the key fact that sod must be delivered and laid within 36 hours of harvesting.",
       "score_method": "llm_judge",
-      "elapsed_ms": 3110,
+      "elapsed_ms": 45544,
       "pipeline_error": null
     },
     {
@@ -1263,12 +1263,12 @@
       "category": "multi_section",
       "difficulty": "hard",
       "question": "A contractor wants to use RAP in an HMA base course and also include GBSM. What is the maximum combined percentage of these two recycled materials, and what are their individual limits?",
-      "gold_answer": "The total recycled materials in HMA base or intermediate course cannot exceed 35 percent. RAP individually is limited to 25 percent maximum, and GBSM is limited to 5 percent maximum. Together they may not exceed the 35 percent combined ceiling (Table 902.02.02-1).",
+      "gold_answer": "The combined total of recycled materials (including RAP and GBSM) in HMA base or intermediate course must not exceed 35%. Individually, RAP is limited to 25% and GBSM is limited to 5%",
       "system_answer": "The maximum combined percentage of RAP and GBSM in an HMA base course is 30 percent, with individual limits of 25 percent for RAP and 5 percent for GBSM.",
       "correct": false,
-      "reason": "The system answer incorrectly states the maximum combined percentage as 30 percent instead of the correct 35 percent.",
+      "reason": "The system answer states a maximum combined percentage of 30 percent, while the gold answer specifies 35 percent.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4087,
+      "elapsed_ms": 6467,
       "pipeline_error": null
     },
     {
@@ -1279,9 +1279,9 @@
       "gold_answer": "Two preconditions: (1) all surfaces in contact with concrete must be preheated to between 50 and 80\u00b0F, and (2) access must be provided for measuring in-place concrete temperature (1/2 inch diameter hole, 6 inches deep at 45 degrees). Protective measure options: insulated forms, insulated blankets (placed on polyethylene sheeting within 30 minutes of placing), or heating and housing.",
       "system_answer": "Before the RE will allow placement when the ambient temperature is forecast below 40\u00b0F, the following two preconditions must be met: 1) All surfaces in contact with the concrete placement must be preheated to between 50 and 80 \u00b0F, and 2) Access must be provided for measuring the temperature of the in-place concrete. The protective measure options to maintain the concrete temperature include: a) Insulated Forms, b) Insulated Blankets, and c) Heating and Housing.",
       "correct": true,
-      "reason": "The system answer accurately reflects the two preconditions and protective measure options as stated in the gold answer, maintaining the key facts and critical values.",
+      "reason": "The system answer accurately reflects the two preconditions and protective measure options as stated in the gold answer, with no critical omissions or incorrect values.",
       "score_method": "llm_judge",
-      "elapsed_ms": 5029,
+      "elapsed_ms": 16035,
       "pipeline_error": null
     },
     {
@@ -1294,7 +1294,7 @@
       "correct": true,
       "reason": "Answer contains 'Insufficient evidence'",
       "score_method": "rule",
-      "elapsed_ms": 1252,
+      "elapsed_ms": 1971,
       "pipeline_error": null
     },
     {
@@ -1307,7 +1307,7 @@
       "correct": true,
       "reason": "The system answer accurately states that the bid bond percentage is 50 percent of the total bid amount, which matches the key fact from the gold answer.",
       "score_method": "llm_judge",
-      "elapsed_ms": 4113,
+      "elapsed_ms": 7783,
       "pipeline_error": null
     }
   ]

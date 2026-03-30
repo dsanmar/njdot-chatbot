@@ -41,6 +41,19 @@ class CitationItem(BaseModel):
     chunk_id:     Optional[str] = None
 
 
+# ── BDC alert item ────────────────────────────────────────────────────────────
+
+class BDCAlertItem(BaseModel):
+    """One Baseline Document Change amendment that affects a retrieved section."""
+
+    bdc_id:              str
+    section_id:          str
+    effective_date:      Optional[str] = None
+    subject:             Optional[str] = None
+    implementation_code: Optional[str] = None
+    change_type:         Optional[str] = None
+
+
 # ── Response ──────────────────────────────────────────────────────────────────
 
 class QueryResponse(BaseModel):
@@ -48,5 +61,6 @@ class QueryResponse(BaseModel):
 
     answer:           str
     citations:        List[CitationItem]
-    query_type:       str   # "semantic" | "keyword-heavy"
+    query_type:       str                  # "semantic" | "keyword-heavy"
     response_time_ms: int
+    bdc_alerts:       List[BDCAlertItem] = []  # non-empty when retrieved sections have BDC amendments
