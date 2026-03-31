@@ -51,7 +51,7 @@ export default function Home() {
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center px-6 py-16 text-center">
           <h1 className="mb-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            NJDOT Smart Assistant
+            Construction Management Smart Assistant  
           </h1>
           <p className="mb-2 text-lg font-medium text-white/80">
             Modernizing NJDOT Workflows with AI
