@@ -233,10 +233,14 @@ class TableExtractor:
         col_count = max((len(r) for r in raw_rows), default=0)
 
         table_type = self._classify(raw_rows)
+        if table_type == "multi_header" and len(raw_rows) >= 2:
+            raw_rows = self._flatten_multi_header(raw_rows)
         markdown   = self._to_markdown(raw_rows)
 
         table_id, table_title = self._find_caption(page, bbox, page_pdf, idx)
         footnotes             = self._find_footnotes(page, bbox)
+        if footnotes:
+            markdown += "\n\nNotes:\n" + "\n".join(footnotes)
 
         return {
             "table_id":    table_id,
@@ -365,6 +369,59 @@ class TableExtractor:
             return "lookup"
 
         return "simple"
+
+    # ── Private: multi-header flattening ─────────────────────────────────────
+
+    @staticmethod
+    def _flatten_multi_header(rows: List[List[Any]]) -> List[List[Any]]:
+        """
+        Merge the first two header rows of a multi-header table into one row.
+
+        pdfplumber leaves empty cells where a spanning header cell covers
+        multiple columns.  This method propagates each non-empty top-row value
+        rightward into the cells it spans, then combines it with the
+        second-row sub-column label so the LLM sees a fully-qualified header
+        in every column.
+
+        Example
+        -------
+        Row 0: ["Roadway Type", "Current IRI (C)", "New Construction...", "", "", "", ""]
+        Row 1: ["",             "",                "",                   "One⁴","Two⁴","Three⁴","Four or More⁴"]
+
+        Merged: ["Roadway Type", "Current IRI (C)",
+                 "New Construction...",
+                 "New Construction... — One⁴",
+                 "New Construction... — Two⁴",
+                 "New Construction... — Three⁴",
+                 "New Construction... — Four or More⁴"]
+        """
+        if len(rows) < 2:
+            return rows
+
+        row0 = [str(c).strip() if c is not None else "" for c in rows[0]]
+        row1 = [str(c).strip() if c is not None else "" for c in rows[1]]
+
+        width = max(len(row0), len(row1))
+        while len(row0) < width:
+            row0.append("")
+        while len(row1) < width:
+            row1.append("")
+
+        merged: List[str] = []
+        last_top = ""
+        for i in range(width):
+            top = row0[i] if row0[i] else last_top
+            if row0[i]:
+                last_top = row0[i]
+            bottom = row1[i]
+            if top and bottom and top != bottom:
+                merged.append(f"{top} — {bottom}")
+            elif top:
+                merged.append(top)
+            else:
+                merged.append(bottom)
+
+        return [merged] + list(rows[2:])
 
     # ── Private: markdown serialisation ──────────────────────────────────────
 

@@ -192,14 +192,25 @@ export default function ChatInterface({ userId, userEmail }: ChatInterfaceProps)
     try {
       // Create conversation on first message
       if (!convId && userId) {
+        const title = query.slice(0, 40) + (query.length > 40 ? '…' : '')
         const { data: conv } = await sb
           .from('conversations')
-          .insert({ user_id: userId, title: query.slice(0, 40) + (query.length > 40 ? '…' : '') })
-          .select('id')
+          .insert({ user_id: userId, title })
+          .select('id, created_at')
           .single()
         if (conv) {
           convId = conv.id
           setCurrentConvId(convId)
+          // ── Optimistic sidebar update ──────────────────────────────────
+          // Prepend immediately so RECENTS shows the new conversation
+          // without waiting for the full LLM response to finish.
+          const now = new Date().toISOString()
+          setConversations(prev => [{
+            id:         conv.id,
+            title,
+            created_at: (conv.created_at as string | null) ?? now,
+            updated_at: now,
+          }, ...prev])
         }
       }
 
@@ -267,22 +278,22 @@ export default function ChatInterface({ userId, userEmail }: ChatInterfaceProps)
     <div className="flex h-screen flex-col bg-[#F5F5F5]">
 
       {/* ══ TOP BAR ══════════════════════════════════════════════════════════════ */}
-      <header className="flex h-14 shrink-0 items-center justify-between border-b border-[#E8E8E8] bg-white px-4 shadow-sm z-10">
+      <header className="flex h-14 shrink-0 items-center justify-between border-b border-[#0F1E3C]/30 bg-[#1B2A4A] px-4 shadow-md z-10">
 
         {/* Left: logo + title */}
         <div className="flex items-center gap-3">
           <Image src="/njdot_logo.png" alt="NJDOT" width={30} height={30} className="shrink-0" />
-          <span className="hidden font-semibold text-[#1B3A6B] sm:block text-sm">Department of Transportation</span>
+          <span className="hidden font-semibold text-white sm:block text-sm">Department of Transportation</span>
         </div>
 
         {/* Center: tab navigation */}
-        <nav className="flex items-center gap-1 rounded-xl bg-[#F5F5F5] p-1">
+        <nav className="flex items-center gap-1 rounded-xl bg-[#0F1E3C]/40 p-1">
           <button
             onClick={() => setActiveTab('spec')}
             className={`rounded-lg px-4 py-1.5 text-xs font-semibold transition-all ${
               activeTab === 'spec'
                 ? 'bg-white text-[#1B3A6B] shadow-sm'
-                : 'text-gray-400 hover:text-gray-600'
+                : 'text-white/60 hover:text-white'
             }`}
           >
             Smart Assistant
@@ -292,7 +303,7 @@ export default function ChatInterface({ userId, userEmail }: ChatInterfaceProps)
             className={`rounded-lg px-4 py-1.5 text-xs font-semibold transition-all ${
               activeTab === 'review'
                 ? 'bg-white text-[#1B3A6B] shadow-sm'
-                : 'text-gray-400 hover:text-gray-600'
+                : 'text-white/60 hover:text-white'
             }`}
           >
             Document Review
@@ -303,7 +314,7 @@ export default function ChatInterface({ userId, userEmail }: ChatInterfaceProps)
         <div id="user-menu" className="relative">
           <button
             onClick={() => setUserDropdownOpen(v => !v)}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1B3A6B] text-[11px] font-bold text-white hover:opacity-85 transition-opacity"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[11px] font-bold text-[#1B2A4A] hover:opacity-85 transition-opacity"
             aria-label="User menu"
           >
             {userInitials}
@@ -357,7 +368,7 @@ export default function ChatInterface({ userId, userEmail }: ChatInterfaceProps)
         <aside
           className={`
             flex w-[280px] flex-col border-r border-[#E8E8E8] bg-white
-            fixed inset-y-14 left-0 z-30 shadow-xl transition-transform duration-200 ease-out
+            fixed top-14 bottom-0 left-0 z-30 shadow-xl transition-transform duration-200 ease-out
             ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
           `}
         >
@@ -499,33 +510,24 @@ function SpecAssistantView({
     <div className="flex h-full">
 
       {/* ── Chat area ── */}
-      <div className="flex min-w-0 flex-1 flex-col bg-white">
+      <div className="flex min-w-0 flex-1 flex-col bg-[#F8F9FA]">
 
         {/* Message list */}
         <div className="flex-1 overflow-y-auto px-4 py-5 space-y-5">
 
-          {/* Suggested questions — only when chat is empty */}
+          {/* Welcome state — only when chat is empty */}
           {messages.length === 0 && !isLoading && (
             <div className="flex min-h-full flex-col items-center justify-center py-8">
-              <div className="grid w-full max-w-xl grid-cols-2 gap-3">
-                {SUGGESTED_QUESTIONS.map((sq) => (
-                  <button
-                    key={sq.title}
-                    onClick={() => onSend(sq.question)}
-                    className="group cursor-pointer rounded-lg border border-[#E8E8E8] bg-white p-3.5 text-left transition-colors hover:border-[#1B3A6B] hover:bg-[#EEF2FF]"
-                  >
-                    {/* Help circle icon */}
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                         stroke="#CC2529" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
-                         className="mb-2">
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                      <path d="M12 17h.01" />
-                    </svg>
-                    <p className="mb-1 text-xs font-semibold text-gray-800">{sq.title}</p>
-                    <p className="text-[11px] leading-relaxed text-gray-500">{sq.question}</p>
-                  </button>
-                ))}
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#EEF2FF] shadow-sm ring-1 ring-[#1B3A6B]/10">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+                     stroke="#1B3A6B" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 8V4H8" />
+                  <rect width="16" height="12" x="4" y="8" rx="2" />
+                  <path d="M2 14h2" />
+                  <path d="M20 14h2" />
+                  <path d="M15 13v2" />
+                  <path d="M9 13v2" />
+                </svg>
               </div>
             </div>
           )}
@@ -603,49 +605,74 @@ function SpecAssistantView({
         </div>
 
         {/* ── Input bar ── */}
-        <div className="shrink-0 border-t border-[#E8E8E8] bg-white px-4 py-3">
-          <div className="mb-2">
-            <select
-              value={collection}
-              onChange={(e) => onCollectionChange(e.target.value)}
-              className="rounded-lg border border-[#E8E8E8] bg-[#F5F5F5] px-3 py-1.5 text-xs text-gray-600 focus:border-[#1B3A6B] focus:outline-none focus:ring-1 focus:ring-[#1B3A6B]/20"
-            >
-              {COLLECTIONS.map(c => (
-                <option key={c.value} value={c.value}>{c.label}</option>
-              ))}
-            </select>
+        <div className="shrink-0 border-t border-[#E0E4EA] bg-[#F8F9FA] px-4 pb-4 pt-3">
+
+          {/* Suggestion pills — always visible above the input card */}
+          <div className="mb-3 flex flex-wrap gap-2">
+            {SUGGESTED_QUESTIONS.map((sq) => (
+              <button
+                key={sq.title}
+                onClick={() => onSend(sq.question)}
+                className="flex items-center gap-1.5 rounded-full border border-[#E0E4EA] bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#1B3A6B] hover:shadow-md"
+              >
+                {/* Small red question icon */}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                     stroke="#CC2529" strokeWidth={2.3} strokeLinecap="round" strokeLinejoin="round"
+                     className="shrink-0">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                  <path d="M12 17h.01" />
+                </svg>
+                {sq.title}
+              </button>
+            ))}
           </div>
 
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => onInputChange(e.target.value)}
-              onKeyDown={onKeyDown}
-              placeholder="Ask about specifications, procedures, or scheduling…"
-              disabled={isLoading}
-              className="flex-1 rounded-xl border border-[#E8E8E8] bg-[#F5F5F5] px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 transition-colors focus:border-[#1B3A6B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1B3A6B]/10 disabled:cursor-not-allowed disabled:opacity-50"
-            />
-            <button
-              onClick={() => onSend()}
-              disabled={isLoading || !input.trim()}
-              className={`flex items-center justify-center rounded-xl px-4 py-2.5 text-white transition-colors focus:outline-none disabled:cursor-not-allowed ${
-                input.trim() && !isLoading
-                  ? 'bg-[#CC2529] hover:bg-[#a81e21] focus:ring-2 focus:ring-[#CC2529]/30'
-                  : 'bg-gray-300 opacity-70'
-              }`}
-              aria-label="Send"
-            >
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </button>
+          {/* Input card — white surface with shadow */}
+          <div className="rounded-2xl border border-[#E2E8F0] bg-white px-3 pb-3 pt-2.5 shadow-md">
+            <div className="mb-2">
+              <select
+                value={collection}
+                onChange={(e) => onCollectionChange(e.target.value)}
+                className="rounded-lg border border-[#E8E8E8] bg-[#F5F5F5] px-3 py-1.5 text-xs text-gray-600 focus:border-[#1B3A6B] focus:outline-none focus:ring-1 focus:ring-[#1B3A6B]/20"
+              >
+                {COLLECTIONS.map(c => (
+                  <option key={c.value} value={c.value}>{c.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => onInputChange(e.target.value)}
+                onKeyDown={onKeyDown}
+                placeholder="Ask about specifications, procedures, or scheduling…"
+                disabled={isLoading}
+                className="flex-1 rounded-xl border border-[#E8E8E8] bg-[#F5F5F5] px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 transition-colors focus:border-[#1B3A6B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1B3A6B]/10 disabled:cursor-not-allowed disabled:opacity-50"
+              />
+              <button
+                onClick={() => onSend()}
+                disabled={isLoading || !input.trim()}
+                className={`flex items-center justify-center rounded-xl px-4 py-2.5 text-white transition-colors focus:outline-none disabled:cursor-not-allowed ${
+                  input.trim() && !isLoading
+                    ? 'bg-[#CC2529] hover:bg-[#a81e21] focus:ring-2 focus:ring-[#CC2529]/30'
+                    : 'bg-gray-300 opacity-70'
+                }`}
+                aria-label="Send"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* ── Citations panel ── */}
-      <aside className="hidden w-80 shrink-0 flex-col border-l border-[#E8E8E8] bg-[#F5F5F5] md:flex">
+      <aside className="hidden w-80 shrink-0 flex-col border-l border-[#DDE3ED] bg-[#EEF2F7] md:flex">
         {/* Header */}
         <div className="shrink-0 border-b border-[#E8E8E8] bg-white px-4 py-3">
           <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
@@ -683,7 +710,7 @@ function SpecAssistantView({
               {/* Citation cards */}
               {latestAnswer.citations.map((cit, i) => (
                 <CitationCard
-                  key={cit.chunk_id || i}
+                  key={`${cit.chunk_id}-${i}`}
                   citation={cit}
                   index={i}
                   onViewPdf={() => onViewPdf(cit)}

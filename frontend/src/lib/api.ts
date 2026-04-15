@@ -6,7 +6,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'
  * POST /api/query — run a RAG query against the NJDOT backend.
  *
  * @param query      Natural-language question.
- * @param collection Optional collection filter: "specs_2019" | "material_procs" |
+ * @param collection Optional collection filter: "specs_2019_v2" | "material_procs" |
  *                   "scheduling".  Omit (or pass undefined) to search all.
  * @throws Error with the backend detail message on non-2xx responses.
  */

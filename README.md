@@ -6,10 +6,11 @@ A RAG (Retrieval-Augmented Generation) chatbot for querying New Jersey Departmen
 
 ## Prerequisites
 
-- **Python 3.11+**
-- **Node.js 18+**
-- A **Supabase** project with the `pgvector` extension enabled and the SQL functions deployed (see `backend/sql/`)
-- An **OpenAI API key** (or a local [Ollama](https://ollama.com) instance — see `.env.example`)
+- Python 3.11+
+- Node.js 18+
+- A Supabase project with the `pgvector` extension enabled
+- An OpenAI API key (for embeddings)
+- An Anthropic API key (for Claude LLM)
 
 ---
 
@@ -62,7 +63,7 @@ Run these from inside the activated virtual environment (`cd backend && source v
 python scripts/ingest_specs.py
 
 # Ingest a single collection
-python scripts/ingest_specs.py --collection specs_2019
+python scripts/ingest_specs.py --collection specs_2019_v2
 python scripts/ingest_specs.py --collection material_procs
 python scripts/ingest_specs.py --collection scheduling
 
@@ -74,4 +75,7 @@ python scripts/deploy_sql.py
 
 # Smoke-test retrieval against the live database
 python scripts/test_retrieval.py
+
+python scripts/insert_iri_table_chunk.py
+
 ```

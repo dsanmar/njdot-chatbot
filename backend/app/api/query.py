@@ -23,8 +23,10 @@ Error policy
 
 from __future__ import annotations
 
+import asyncio
 import time
 import logging
+from functools import partial
 from typing import List
 
 from fastapi import APIRouter, HTTPException
@@ -37,7 +39,10 @@ from app.retrieval.bdc_matcher           import get_bdc_matcher
 from app.generation.llm_client           import LLMClient
 from app.generation.prompt_builder       import PromptBuilder
 from app.generation.citation_serializer  import CitationSerializer
-from app.models                          import BDCAlertItem, CitationItem, QueryRequest, QueryResponse
+from app.models                          import (
+    BDCAlertItem, CitationItem, QueryRequest, QueryResponse,
+    DebugChunkItem, DebugResponse,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +64,8 @@ _serializer  = CitationSerializer()
 
 router = APIRouter(prefix="/api")
 
-_RETRIEVE_K: int = 5   # chunks passed to the LLM context
+_RETRIEVE_K: int = 8    # chunks passed to the LLM context
+_DEBUG_K:    int = 20   # larger candidate pool for debug — reveals all ranked candidates
 
 
 @router.post(
@@ -166,4 +172,111 @@ async def query_endpoint(request: QueryRequest) -> QueryResponse:
         query_type=query_type,
         response_time_ms=elapsed_ms,
         bdc_alerts=bdc_alerts,
+    )
+
+
+@router.post(
+    "/debug",
+    response_model=DebugResponse,
+    summary="Debug retrieval pipeline internals",
+    description=(
+        "Runs hybrid retrieval with a larger candidate pool (``_DEBUG_K``) "
+        "and returns per-chunk rank metadata (vector rank, keyword rank, RRF "
+        "score, cleaned BM25 query) alongside the LLM answer.  "
+        "Intended for development use only."
+    ),
+)
+async def debug_endpoint(request: QueryRequest) -> DebugResponse:
+    """
+    End-to-end debug RAG endpoint.
+
+    Runs the same pipeline as ``/api/query`` but with ``match_count=_DEBUG_K``
+    and ``debug=True``, exposing per-chunk retrieval metadata so retrieval
+    quality can be inspected.
+
+    Parameters
+    ----------
+    request : QueryRequest
+        ``{"query": "...", "collection": "specs_2019" | null}``
+
+    Returns
+    -------
+    DebugResponse
+        Full chunk metadata including vector/keyword ranks, RRF scores, the
+        cleaned BM25 query string, query classification weights, and the LLM
+        answer.
+
+    Raises
+    ------
+    HTTPException 400
+        If the query is empty.
+    HTTPException 500
+        If any step in the pipeline raises an unexpected exception.
+    """
+    t_start = time.time()
+
+    query      = request.query.strip()
+    collection = request.collection
+
+    if not query:
+        raise HTTPException(status_code=400, detail="query must not be empty or blank")
+
+    v_weight, k_weight, query_type = classify_query(query)
+
+    try:
+        # ── Step 1: Hybrid retrieval (debug mode, larger pool) ────────────
+        loop = asyncio.get_event_loop()
+        chunks, bm25_cleaned_query = await loop.run_in_executor(
+            None,
+            partial(_hybrid.search, query, collection, _DEBUG_K, True),
+        )
+
+        # ── Step 2: Prompt assembly ───────────────────────────────────────
+        system_prompt, user_message = _builder.build(query, chunks)
+
+        # ── Step 3: LLM generation ────────────────────────────────────────
+        raw_response = _llm.complete(system_prompt, user_message)
+
+        # ── Step 4: Parse + validate citations ───────────────────────────
+        result = _serializer.serialize(raw_response, chunks)
+
+    except Exception as exc:                              # noqa: BLE001
+        logger.exception("Debug pipeline error for query=%r collection=%r", query, collection)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Debug pipeline error [{type(exc).__name__}]: {exc}",
+        ) from exc
+
+    elapsed_ms = int((time.time() - t_start) * 1000)
+    answer     = result.get("answer", "")
+
+    # ── Build per-chunk debug items ────────────────────────────────────────
+    debug_chunks: List[DebugChunkItem] = []
+    for chunk in chunks:
+        meta    = chunk.get("metadata", {})
+        content = chunk.get("content", "")
+        preview = content[:300] + "..." if len(content) > 300 else content
+        debug_chunks.append(DebugChunkItem(
+            chunk_id      = chunk.get("id", ""),
+            collection    = chunk.get("collection", ""),
+            section_id    = meta.get("section_id", ""),
+            section_title = meta.get("section_title", ""),
+            doc           = meta.get("doc", ""),
+            page_printed  = meta.get("page_printed"),
+            rrf_score     = chunk.get("similarity", 0.0),
+            vector_rank   = chunk.get("_vector_rank"),
+            keyword_rank  = chunk.get("_keyword_rank"),
+            content_preview = preview,
+        ))
+
+    return DebugResponse(
+        query              = query,
+        query_type         = query_type,
+        vector_weight      = v_weight,
+        keyword_weight     = k_weight,
+        bm25_cleaned_query = bm25_cleaned_query,
+        retrieve_k         = _DEBUG_K,
+        chunks             = debug_chunks,
+        answer             = answer,
+        response_time_ms   = elapsed_ms,
     )

@@ -459,7 +459,12 @@ export default function DocumentReview() {
     <div className="h-full overflow-y-auto bg-[#F5F5F5]">
       <div className="mx-auto max-w-2xl px-5 py-10">
 
-        <h2 className="mb-1 text-lg font-bold text-[#1B3A6B]">Document Review</h2>
+        <div className="mb-1 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-[#1B3A6B]">Document Review</h2>
+          <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+            Beta Testing
+          </span>
+        </div>
         <p className="mb-8 text-sm text-gray-500">
           Upload the CPM schedule and designer narrative PDFs to run an automated
           NJDOT compliance review.
@@ -533,9 +538,6 @@ export default function DocumentReview() {
                 </div>
               ))}
             </div>
-            <p className="mt-3 text-[11px] text-gray-400">
-              29 automated checks across 7 categories · 9 manual review items
-            </p>
           </div>
         )}
 

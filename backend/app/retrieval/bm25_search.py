@@ -64,7 +64,7 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 # ── Package-root import shim ─────────────────────────────────────────────────
 try:
@@ -169,6 +169,38 @@ class KeywordSearcher:
             ``id``, ``content``, ``metadata``, ``similarity``, ``collection``.
         """
         return self._rpc_search(query, collection, match_count)
+
+    def search_with_debug(
+        self,
+        query:       str,
+        collection:  Optional[str] = None,
+        match_count: int           = 10,
+    ) -> Tuple[List[Dict[str, Any]], str]:
+        """
+        Run a full-text keyword search and also return the cleaned query string.
+
+        Same as :meth:`search` but returns a ``(results, cleaned_query)`` tuple
+        so callers can log or surface the exact string passed to
+        ``websearch_to_tsquery``.
+
+        Parameters
+        ----------
+        query : str
+            Natural-language question or keyword phrase.
+        collection : str or None
+            Restrict results to this collection.  ``None`` → all collections.
+        match_count : int
+            Maximum number of results to return (default 10).
+
+        Returns
+        -------
+        tuple[list[dict], str]
+            ``(results, cleaned_query)`` where ``cleaned_query`` is the
+            stop-word-stripped string that was sent to PostgreSQL.
+        """
+        cleaned_query = _clean_for_bm25(query)
+        results       = self._rpc_search(query, collection, match_count)
+        return results, cleaned_query
 
     # ── Private ───────────────────────────────────────────────────────────────
 

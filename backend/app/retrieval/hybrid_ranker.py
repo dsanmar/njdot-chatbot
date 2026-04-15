@@ -78,7 +78,7 @@ import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, Future
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 # ── Package-root import shim ─────────────────────────────────────────────────
 try:
@@ -213,7 +213,8 @@ class HybridRanker:
         query:       str,
         collection:  Optional[str] = None,
         match_count: int           = 15,
-    ) -> List[Dict[str, Any]]:
+        debug:       bool          = False,
+    ) -> Union[List[Dict[str, Any]], Tuple[List[Dict[str, Any]], str]]:
         """
         Run hybrid retrieval and return RRF-merged results.
 
@@ -225,13 +226,23 @@ class HybridRanker:
             Restrict results to this collection.  ``None`` → all collections.
         match_count : int
             Number of top results to return (default 15).
+        debug : bool
+            When ``True``, each chunk dict gains ``_vector_rank`` and
+            ``_keyword_rank`` keys (1-based; ``None`` if absent from that
+            result list), and the return value is a
+            ``(chunks, bm25_cleaned_query)`` tuple instead of just the list.
+            When ``False`` (default) behaviour is identical to before.
 
         Returns
         -------
         list[dict]
-            Sorted by descending RRF score.  Each dict has:
-            ``id``, ``content``, ``metadata``, ``similarity``, ``collection``.
-            The ``similarity`` field holds the weighted RRF score.
+            When ``debug=False``: sorted by descending RRF score.  Each dict
+            has: ``id``, ``content``, ``metadata``, ``similarity``,
+            ``collection``.  The ``similarity`` field holds the weighted RRF
+            score.
+        tuple[list[dict], str]
+            When ``debug=True``: ``(chunks, bm25_cleaned_query)`` where each
+            chunk also carries ``_vector_rank`` / ``_keyword_rank``.
         """
         v_weight, k_weight, _label = classify_query(query)
         pool = max(match_count * _POOL_MULTIPLIER, 20)
@@ -245,26 +256,42 @@ class HybridRanker:
                 pool,
                 0.0,          # no threshold; let RRF decide
             )
-            k_future: Future = executor.submit(
-                self._keyword.search,
-                query,
-                collection,
-                pool,
-            )
+            if debug:
+                k_future: Future = executor.submit(
+                    self._keyword.search_with_debug,
+                    query,
+                    collection,
+                    pool,
+                )
+            else:
+                k_future = executor.submit(
+                    self._keyword.search,
+                    query,
+                    collection,
+                    pool,
+                )
             v_results: List[Dict[str, Any]] = v_future.result()
-            k_results: List[Dict[str, Any]] = k_future.result()
+            k_raw = k_future.result()
 
-        return self._rrf_merge(v_results, k_results, v_weight, k_weight, match_count)
+        if debug:
+            k_results, bm25_cleaned_query = k_raw
+            chunks = self._rrf_merge(
+                v_results, k_results, v_weight, k_weight, match_count, debug=True
+            )
+            return chunks, bm25_cleaned_query
+
+        return self._rrf_merge(v_results, k_raw, v_weight, k_weight, match_count)
 
     # ── Private ───────────────────────────────────────────────────────────────
 
     @staticmethod
     def _rrf_merge(
-        v_results: List[Dict[str, Any]],
-        k_results: List[Dict[str, Any]],
-        v_weight:  float,
-        k_weight:  float,
+        v_results:   List[Dict[str, Any]],
+        k_results:   List[Dict[str, Any]],
+        v_weight:    float,
+        k_weight:    float,
         match_count: int,
+        debug:       bool = False,
     ) -> List[Dict[str, Any]]:
         """
         Merge two ranked lists using weighted Reciprocal Rank Fusion.
@@ -275,9 +302,15 @@ class HybridRanker:
                      + k_weight × 1/(_RRF_K + rank_k(d))
 
         Chunks that appear in only one list still receive a partial score.
+
+        When ``debug=True``, each returned dict also carries:
+            ``_vector_rank``  – 1-based rank in *v_results*; ``None`` if absent.
+            ``_keyword_rank`` – 1-based rank in *k_results*; ``None`` if absent.
         """
-        scores: Dict[str, float]          = {}
-        data:   Dict[str, Dict[str, Any]] = {}
+        scores:   Dict[str, float]          = {}
+        data:     Dict[str, Dict[str, Any]] = {}
+        v_ranks:  Dict[str, int]            = {}   # rid → 1-based vector rank
+        k_ranks:  Dict[str, int]            = {}   # rid → 1-based keyword rank
 
         for rank, result in enumerate(v_results, start=1):
             rid = result["id"]
@@ -286,6 +319,7 @@ class HybridRanker:
             scores[rid] = scores.get(rid, 0.0) + v_weight * (1.0 / (_RRF_K + rank))
             if rid not in data:
                 data[rid] = result
+            v_ranks[rid] = rank
 
         for rank, result in enumerate(k_results, start=1):
             rid = result["id"]
@@ -294,6 +328,7 @@ class HybridRanker:
             scores[rid] = scores.get(rid, 0.0) + k_weight * (1.0 / (_RRF_K + rank))
             if rid not in data:
                 data[rid] = result
+            k_ranks[rid] = rank
 
         # Sort by descending RRF score and take top match_count
         sorted_ids = sorted(scores, key=lambda x: scores[x], reverse=True)
@@ -302,6 +337,9 @@ class HybridRanker:
         for rid in sorted_ids[:match_count]:
             result = dict(data[rid])
             result["similarity"] = round(scores[rid], 6)
+            if debug:
+                result["_vector_rank"]  = v_ranks.get(rid)
+                result["_keyword_rank"] = k_ranks.get(rid)
             merged.append(result)
 
         return merged

@@ -64,3 +64,34 @@ class QueryResponse(BaseModel):
     query_type:       str                  # "semantic" | "keyword-heavy"
     response_time_ms: int
     bdc_alerts:       List[BDCAlertItem] = []  # non-empty when retrieved sections have BDC amendments
+
+
+# ── Debug models ──────────────────────────────────────────────────────────────
+
+class DebugChunkItem(BaseModel):
+    """Metadata for a single retrieved chunk returned by ``POST /api/debug``."""
+
+    chunk_id:      str
+    collection:    str
+    section_id:    str
+    section_title: str
+    doc:           str
+    page_printed:  Optional[int]
+    rrf_score:     float
+    vector_rank:   Optional[int]   # 1-based rank in vector results; None if absent
+    keyword_rank:  Optional[int]   # 1-based rank in keyword results; None if absent
+    content_preview: str           # first 300 chars of chunk content (+ "..." if truncated)
+
+
+class DebugResponse(BaseModel):
+    """Body returned by ``POST /api/debug``."""
+
+    query:              str
+    query_type:         str    # "keyword-heavy" or "semantic"
+    vector_weight:      float
+    keyword_weight:     float
+    bm25_cleaned_query: str    # the cleaned query passed to keyword_search_chunks
+    retrieve_k:         int    # how many chunks were returned to the LLM
+    chunks:             List[DebugChunkItem]
+    answer:             Optional[str]   # LLM answer for quality comparison
+    response_time_ms:   int
